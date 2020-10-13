@@ -4,24 +4,29 @@ import ru.ifmo.se.pokemon.Stat;
 import ru.ifmo.se.pokemon.Type;
 
 public class RazorLeaf extends PhysicalMove {
-	
-	public RazorLeaf(Type type, double pow, double acc, int priority, int hits) {
-		super(type, pow, acc, priority, hits);
-	}	
-	
-	public RazorLeaf() {
-		super(Type.GRASS, 55, 0.95, 0, 25);
-	}	
-	
+
+    public RazorLeaf(Type type, double pow, double acc, int priority, int hits) {
+        super(type, pow, acc, priority, hits);
+    }
+
+    public RazorLeaf() {
+        super(Type.GRASS, 55, 0.95, 0, 25);
+    }
+
     protected double calcCriticalHit(final Pokemon pokemon, final Pokemon pokemon2) {
         if (pokemon.getStat(Stat.SPEED) * 1.25 / 512.0 > Math.random()) {
-        	System.out.println(" –»“»◊≈— »… ”–ŒÕ!");
+            System.out.println("–ö–†–ò–¢–ò–ß–ï–°–ö–ò–ô –£–†–û–ù!");
             return 2.0;
         }
         return 1.0;
     }
-    
-	protected java.lang.String describe(){
-		return ("‡Ú‡ÍÛÂÚ, ËÒÔÓÎ¸ÁÛˇ Razor Leaf!");
-	}
+
+    protected java.lang.String describe() {
+        if (0.5 > Math.random() / 1.5) {
+            System.out.println("–ù–ê!");
+            return ("–∞—Ç–∞–∫—É–µ—Ç, –∏—Å–ø–æ–ª—å–∑—É—è Razor Leaf!");
+        }
+        System.out.println("–ï–®–¨ *–ù–ê!");
+        return ("–∞—Ç–∞–∫—É–µ—Ç, –∏—Å–ø–æ–ª—å–∑—É—è Razor Leaf!");
+    }
 }
