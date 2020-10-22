@@ -18,7 +18,7 @@ public class RockTomb extends PhysicalMove {
         return ("атакует, используя Rock Tomb!");
     }
 
-    protected void applyAllyEffects(Pokemon p) {
+    protected void applyOppEffects(Pokemon p) {
         p.setMod(Stat.SPEED, -1);
     }
 
