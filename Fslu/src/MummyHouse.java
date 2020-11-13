@@ -5,13 +5,15 @@ public class MummyHouse {
     private int code = 1;
 
     public MummyHouse(TofslaAndVifsla good) {
-        Access(good);
-        this.code++;
+        if (equals(good)) {
+            this.code++;
+        }
     }
-
-    private void Access(TofslaAndVifsla good) {
+    @Override
+    public boolean equals(Object good) {
         String name = good.toString();
         out.println("Мумми-дом: " + hashCode() + " " + name + " - доступ разрешен.");
+        return true;
     }
 
     @Override

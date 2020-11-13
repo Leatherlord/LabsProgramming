@@ -12,7 +12,7 @@ public class TofslaAndVifsla extends Stranger implements LivingCreatures {
     }
 
     @Override
-    public void equals(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

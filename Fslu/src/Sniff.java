@@ -1,16 +1,11 @@
 import static java.lang.Math.random;
 
 public class Sniff implements LivingCreatures {
-private int size = 100;
+private final int size = 100;
 
     public boolean lookAt(Stranger str) throws ExceptionStoryWentWrong{
         isAlive();
-        if (str.getSize() < this.size) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return str.getSize() < this.size;
     }
 
     public void isAlive() throws ExceptionStoryWentWrong{

@@ -13,7 +13,7 @@ public class Carpet implements Movable {
     }
 
     public void put() {
-        if (this.position == "Wrong") {
+        if (this.position.equals("Wrong")) {
             this.position = "Right";
         }
     }

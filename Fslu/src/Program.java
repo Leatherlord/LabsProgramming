@@ -15,15 +15,15 @@ public class Program {
                     " и их не пустили в Мумми-дом.");
         }
         TofslaAndVifsla good = (TofslaAndVifsla) tnv;
-        good.equals("Тофсла и Вифсла");
-        MummyHouse house = new MummyHouse(good);
+        good.setName("Тофсла и Вифсла");
+        new MummyHouse(good);
         if (good.cockTheNose() | !good.together()) {
             throw new ExceptionStoryWentWrong();
         } else {
             out.println(good.toString() + " ни перед кем не задирали носа и почти все время " +
                     "бродили по долине рука об руку.");
         }
-        Case tnvcase = new Case(good);
+        new Case(good);
         while (time != Daytime.EVENING) {
             time = setTime();
         }
