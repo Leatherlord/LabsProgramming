@@ -1,4 +1,4 @@
-import static java.lang.Math.*;
+import static java.lang.Math.random;
 
 public class Sniff implements LivingCreatures {
 private int size = 100;
@@ -14,7 +14,7 @@ private int size = 100;
     }
 
     public void isAlive() throws ExceptionStoryWentWrong{
-        if (random()<0.05){
+        if (random() < 0.05) {
             throw new ExceptionStoryWentWrong("Снифф мертв! История пошла не по тому сценарию...");
         }
     }

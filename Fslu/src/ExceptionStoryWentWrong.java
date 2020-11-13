@@ -1,8 +1,9 @@
 public class ExceptionStoryWentWrong extends Exception {
-    public ExceptionStoryWentWrong(String description){
+    public ExceptionStoryWentWrong(String description) {
         super(description);
     }
-    public ExceptionStoryWentWrong(){
+
+    public ExceptionStoryWentWrong() {
         super("В вашей истории что-то пошло не так...");
     }
 

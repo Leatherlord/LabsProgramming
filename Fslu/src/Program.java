@@ -1,7 +1,7 @@
-import static java.lang.Math.*;
-import static java.lang.System.*;
+import static java.lang.Math.random;
+import static java.lang.System.out;
 
-public class Program{
+public class Program {
 
     public static void main(String[] args) throws ExceptionStoryWentWrong {
         Daytime time = Daytime.DAY;
@@ -17,14 +17,14 @@ public class Program{
         TofslaAndVifsla good = (TofslaAndVifsla) tnv;
         good.equals("Тофсла и Вифсла");
         MummyHouse house = new MummyHouse(good);
-        if (good.cockTheNose() | !good.together()){
+        if (good.cockTheNose() | !good.together()) {
             throw new ExceptionStoryWentWrong();
         } else {
             out.println(good.toString() + " ни перед кем не задирали носа и почти все время " +
                     "бродили по долине рука об руку.");
         }
         Case tnvcase = new Case(good);
-        while (time != Daytime.EVENING){
+        while (time != Daytime.EVENING) {
             time = setTime();
         }
         good.worry();
@@ -39,6 +39,5 @@ public class Program{
             return Daytime.DAY;
         }
     }
-
 
 }

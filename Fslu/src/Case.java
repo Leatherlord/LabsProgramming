@@ -1,24 +1,24 @@
-import static java.lang.System.*;
+import static java.lang.System.out;
 
 public class Case implements Movable {
     public Case(Stranger good) throws ExceptionStoryWentWrong {
-        if (!good.toString().equalsIgnoreCase("Тофсла и Вифсла")){
+        if (!good.toString().equalsIgnoreCase("Тофсла и Вифсла")) {
             throw new ExceptionStoryWentWrong("Чемодан украли!");
-        } else{
+        } else {
             out.println("Чемодан: владелец подтвержден.");
             carry(good.toString());
         }
     }
 
-    public void carry(String name){
+    public void carry(String name) {
         out.println(name + " таскают чемодан с собой.");
     }
 
-    public void move(){
+    public void move() {
         out.println("Чемодан сдвинулся с места");
     }
 
-    public void put(){
+    public void put() {
         out.println("Чемодан поставили на место");
     }
 }
