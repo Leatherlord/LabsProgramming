@@ -2,8 +2,10 @@ import static java.lang.System.out;
 
 public class Case implements Movable {
     public Case(Stranger good) throws ExceptionStoryWentWrong {
-        if (!good.toString().equalsIgnoreCase("Тофсла и Вифсла")) {
-            throw new ExceptionStoryWentWrong("Чемодан украли!");
+        if (!good.toString().equalsIgnoreCase(
+                "Тофсла и Вифсла")) {
+            throw new ExceptionStoryWentWrong(
+                    "Чемодан украли!");
         } else {
             out.println("Чемодан: владелец подтвержден.");
             carry(good.toString());

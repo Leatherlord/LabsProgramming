@@ -1,3 +1,3 @@
-public interface LivingCreatures {
+public interface ILive {
     void isAlive() throws ExceptionStoryWentWrong;
 }

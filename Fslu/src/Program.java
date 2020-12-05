@@ -5,29 +5,19 @@ public class Program {
 
     public static void main(String[] args) throws ExceptionStoryWentWrong {
         Daytime time = Daytime.DAY;
-        Sniff sniff = new Sniff();
         Stranger tnv = new TofslaAndVifsla();
-        if (sniff.lookAt(tnv)) {
-            out.println("Снифф глянул на Странников, отметил с удовлетворением, что они меньше него," +
-                    " подобрел и снисходительно принял их в Мумми-дом.");
-        } else {
-            throw new ExceptionStoryWentWrong("Тофсла и Вифсла оказались плохими ребятами," +
-                    " и их не пустили в Мумми-дом.");
-        }
+        Sniff sniff = new Sniff(tnv);
         TofslaAndVifsla good = (TofslaAndVifsla) tnv;
         good.setName("Тофсла и Вифсла");
         new MummyHouse(good);
-        if (good.cockTheNose() | !good.together()) {
-            throw new ExceptionStoryWentWrong();
-        } else {
-            out.println(good.toString() + " ни перед кем не задирали носа и почти все время " +
-                    "бродили по долине рука об руку.");
-        }
+        good.check();
         new Case(good);
         while (time != Daytime.EVENING) {
             time = setTime();
         }
-        good.worry();
+        Staircase stc = new Staircase();
+        Carpet cpt = new Carpet();
+        good.worry(stc, cpt);
     }
 
     private static Daytime setTime() {

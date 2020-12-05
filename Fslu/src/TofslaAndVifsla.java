@@ -1,7 +1,7 @@
 import static java.lang.Math.random;
 import static java.lang.System.out;
 
-public class TofslaAndVifsla extends Stranger implements LivingCreatures {
+public class TofslaAndVifsla extends Stranger{
     private final int size = 25;
     private String name = "Незнакомцы";
 
@@ -21,19 +21,25 @@ public class TofslaAndVifsla extends Stranger implements LivingCreatures {
         return this.name;
     }
 
-    public boolean cockTheNose() throws ExceptionStoryWentWrong {
+    private boolean cockTheNose() throws ExceptionStoryWentWrong {
         isAlive();
         return false;
     }
 
-    public boolean together() throws ExceptionStoryWentWrong {
+    private boolean together() throws ExceptionStoryWentWrong {
         isAlive();
         return random() > 0.1;
     }
 
-    public void worry() throws ExceptionStoryWentWrong {
-        Staircase stc = new Staircase();
-        Carpet cpt = new Carpet();
+    public void check() throws ExceptionStoryWentWrong{
+        if (cockTheNose() | !together()) {
+            throw new ExceptionStoryWentWrong();
+        } else {
+            out.println(toString() + " ни перед кем не задирали носа и почти все время " +
+                    "бродили по долине рука об руку.");
+        }
+    }
+    public void worry(Staircase stc, Carpet cpt) throws ExceptionStoryWentWrong {
         isAlive();
         out.println(this.name + " забеспокоились!");
         stc.run(this.name);
