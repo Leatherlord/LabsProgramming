@@ -1,0 +1,8 @@
+*.odt
+.idea
+venv
+*.doc
+*.docx
+*.png
+*.jpg
+*.iml
