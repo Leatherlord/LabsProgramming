@@ -1,12 +1,12 @@
 # LabsProgramming
 My programming labs
 
-### Pokedex 
+## Pokedex 
 Pokemon.jar-based classes describing multiple Pokemon and their abilities.
  - Attempt.java - main class, program starts from here
  - Lab.jar - execute it with Pokemon.jar (On UNIX:java -cp Pokemon.jar:Lab.jar Attempt)
  
-### Fslu
+## Fslu
 Programmed Muminhuset-based story whith some unexpected outcomes
  - Program.java / Program.class - main class, program starts from here
  - Based on: "Снифф глянул на них и с удовлетворением отметил про себя, что они намного меньше его. От этого он сразу подобрел и снисходительно сказал: Так Тофслу и Вифслу приняли в Муми-дом. Они ни перед кем не задирали носа и почти все время бродили по долине рука об руку. Чемодан они повсюду таскали с собой. Но когда наступили сумерки, они забеспокоились, забегали по всем лестницам и в конце концов спрятались под ковер."
