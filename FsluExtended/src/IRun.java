@@ -1,4 +1,5 @@
 public interface IRun {
-    public void runTo(Object obj) throws ExceptionStoryWentWrong;
-    public void run();
+    void runTo(Object obj) throws ExceptionStoryWentWrong;
+
+    void run();
 }

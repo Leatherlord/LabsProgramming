@@ -1,15 +1,16 @@
 import static java.lang.Math.random;
 import static java.lang.System.out;
 
-public class TofslaAndVifsla extends Stranger implements IRun{
+public class TofslaAndVifsla extends Stranger implements IRun {
     private final int size = 25;
     private String name = "Незнакомцы";
 
-    public TofslaAndVifsla(String name){
+    public TofslaAndVifsla(String name) {
         setName(name);
     }
 
-    public TofslaAndVifsla(){}
+    public TofslaAndVifsla() {
+    }
 
     @Override
     public int getSize() throws ExceptionStoryWentWrong {
@@ -37,7 +38,7 @@ public class TofslaAndVifsla extends Stranger implements IRun{
         return random() > 0.1;
     }
 
-    public void walkTheValley() throws ExceptionStoryWentWrong{
+    public void walkTheValley() throws ExceptionStoryWentWrong {
         if (cockTheNose() | !together()) {
             throw new ExceptionStoryWentWrong();
         } else {
@@ -45,6 +46,7 @@ public class TofslaAndVifsla extends Stranger implements IRun{
                     "бродили по долине рука об руку.");
         }
     }
+
     public void worryNRun(MummyHouse.Staircase stc, MummyHouse.Carpet cpt) throws ExceptionStoryWentWrong {
         isAlive();
         out.println(this.name + " забеспокоились!");
@@ -69,18 +71,19 @@ public class TofslaAndVifsla extends Stranger implements IRun{
         out.println(this.name + " поднялись в гостиную.");
     }
 
-    public void showScary(){
+    public void showScary() {
         out.println(this.name + " вытаращили глаза, оскалили зубы и напыжились, как только могли.");
     }
 
-    public TofslaAndVifsla getOnlyTofsla(){
-        class Tofsla extends TofslaAndVifsla{
-            private String name = "Тофсла";
-            private int size = 12;
+    public TofslaAndVifsla getOnlyTofsla() {
+        class Tofsla extends TofslaAndVifsla {
+            private final String name = "Тофсла";
+            private final int size = 12;
 
-            public void showScary(){
+            public void showScary() {
                 out.println(this.name + " вытаращил глаза, оскалил зубы и напыжился, как только мог.");
             }
+
             public int getSize() throws ExceptionStoryWentWrong {
                 isAlive();
                 return this.size;
@@ -96,7 +99,7 @@ public class TofslaAndVifsla extends Stranger implements IRun{
                 return false;
             }
 
-            public void walkTheValley() throws ExceptionStoryWentWrong{
+            public void walkTheValley() throws ExceptionStoryWentWrong {
                 if (cockTheNose() | !together()) {
                     throw new ExceptionStoryWentWrong("Тофсла ушел от Вифслы бродить по долине в одиночку...");
                 } else {
@@ -104,6 +107,7 @@ public class TofslaAndVifsla extends Stranger implements IRun{
                             "бродил по долине рука об руку с Вифслой.");
                 }
             }
+
             public void worryNRun(MummyHouse.Staircase stc, MummyHouse.Carpet cpt) throws ExceptionStoryWentWrong {
                 isAlive();
                 out.println(this.name + " забеспокоился!");
@@ -127,18 +131,25 @@ public class TofslaAndVifsla extends Stranger implements IRun{
                 out.println(this.name + " поднялся в гостиную.");
                 throw new ExceptionStoryWentWrong("Но Вифсла остался там же...");
             }
+
             public void runTo(Object obj) throws ExceptionStoryWentWrong {
                 isAlive();
                 System.out.println(this.name + " прибежал к " + obj.toString() + ".");
                 throw new ExceptionStoryWentWrong("Но Вифсла остался там же...");
             }
+
             public void runTo(Object obj, String str) throws ExceptionStoryWentWrong {
                 isAlive();
                 System.out.println(this.name + " прибежал к " + obj.toString() + str + ".");
                 throw new ExceptionStoryWentWrong("Но Вифсла остался там же...");
             }
+
             public void run() {
                 out.println("Тофсла бегает из стороны в сторону.");
+            }
+
+            public void sleep() {
+                out.println("Тофсла спит.");
             }
         }
         Tofsla t = new Tofsla();
@@ -150,12 +161,19 @@ public class TofslaAndVifsla extends Stranger implements IRun{
         isAlive();
         System.out.println(this.name + " прибежали к " + obj.toString() + ".");
     }
+
     public void runTo(Object obj, String str) throws ExceptionStoryWentWrong {
         isAlive();
         System.out.println(this.name + " прибежали к " + obj.toString() + str + ".");
     }
+
     @Override
     public void run() {
         out.println("Тофсла и Вифсла бегают.");
     }
+
+    public void sleep() {
+        out.println("Тофсла и Вифсла спят.");
+    }
+
 }

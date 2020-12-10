@@ -9,19 +9,22 @@ public class Program {
         Hemule hemule = new Hemule();
         hemule.cook();
         sniff.cook();
-        hemule.runTo(new Movable(){
+        hemule.runTo(new Movable() {
             @Override
-            public String toString(){
+            public String toString() {
                 return "Крышка";
             }
+
             @Override
             public void carry(String name) {
                 out.println("Крышку забрали");
             }
+
             @Override
             public void move() {
                 out.println("Крышку подвинули");
             }
+
             @Override
             public void put() {
                 out.println("Крышку положили");
@@ -33,7 +36,7 @@ public class Program {
         sniff.lookAt(tnv, house);
         Daytime time = Daytime.DAY;
         tnv.walkTheValley();
-        new Case(tnv);
+        Case cs = new Case(tnv);
         while (time != Daytime.EVENING) {
             time = setEvening();
         }
@@ -44,7 +47,8 @@ public class Program {
         MummyMom mom = new MummyMom();
         hemule.runTo(mom, " и что-то сказал");
         MummyHouse.Commode cmd = house.new Commode();
-        cmd.hide(tnv.toString());
+        MummyHouse.Commode.Locker lck = cmd.new Locker();
+        cmd.hide(tnv.toString(), lck);
         MummyDad dad = new MummyDad();
         dad.goTo("в сарай", "за ружьем");
         while (time != Daytime.NIGHT) {
@@ -52,7 +56,19 @@ public class Program {
         }
         dad.worryAboutMorra();
         dad.goTo("на веранду");
-
+        MummyHouse.Door door = house.new Door();
+        MummyHouse.Sofa sofa = house.new Sofa();
+        sofa.move(dad, door);
+        dad.saySmth();
+        lck.silent();
+        lck.move(dad);
+        tnv.sleep();
+        if (Math.random() > 0.9) {
+            cs.move();
+            throw new ExceptionStoryWentWrong("Украли чемодан!!!");
+        } else {
+            out.println("Чемодан лежал рядом с " + tnv.toString());
+        }
     }
 
     private static Daytime setEvening() {
@@ -64,17 +80,20 @@ public class Program {
             return Daytime.DAY;
         }
     }
+
     private static Daytime setNight() throws ExceptionStoryWentWrong {
         if (random() > 0.3) {
             out.println("На дворе уже было по-августовски темно, сад окутали бархатисто-черные тени.");
             out.println("Что-то мрачно шумело в лесу.");
-            class Fireflies implements ILive{
-                private String name = "Светлячки";
+            class Fireflies implements ILive {
+                private final String name = "Светлячки";
+
                 public Fireflies() throws ExceptionStoryWentWrong {
                     isAlive();
                     flash();
                 }
-                private void flash(){
+
+                private void flash() {
                     out.println("Мелькали со своими карманными фонариками " + this.name + ".");
                 }
 

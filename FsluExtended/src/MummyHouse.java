@@ -3,9 +3,30 @@ import static java.lang.System.out;
 
 public class MummyHouse {
 
-    public static abstract class MummyHouseResident implements ILive{}
+    private int code = 1;
 
-    public class Carpet implements Movable {
+    public void access(ILive good) {
+        if (equals(good)) {
+            this.code++;
+        }
+    }
+
+    @Override
+    public boolean equals(Object good) {
+        String name = good.toString();
+        out.println("Мумми-дом: " + hashCode() + " " + name + " - доступ разрешен.");
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (this.code * random() * 1707);
+    }
+
+    static abstract class MummyHouseResident implements ILive {
+    }
+
+    class Carpet implements Movable {
         String position = "Right";
 
         @Override
@@ -34,7 +55,7 @@ public class MummyHouse {
         }
     }
 
-    public class Staircase {
+    class Staircase {
         public void run(String name) throws ExceptionStoryWentWrong {
             if (toTripOver()) {
                 throw new ExceptionStoryWentWrong("Бегать по лестницам " +
@@ -50,8 +71,7 @@ public class MummyHouse {
         }
     }
 
-    public class Commode implements Movable{
-
+    class Commode implements Movable {
         @Override
         public void carry(String name) {
             throw new ExceptionImpossible();
@@ -68,47 +88,66 @@ public class MummyHouse {
                     " как его умудрились поставить?! Ты как из дурки сбежал, программист?");
         }
 
-        public void hide(String name){
-            out.println(name + " спрятались в ящик комода.");
+        public void hide(String name, Locker lck) {
+            out.println(name + " спрятались в " + lck.toString() + ".");
+        }
+
+        class Locker implements Movable {
+            @Override
+            public String toString() {
+                return "Ящик комода";
+            }
+
+            public void silent() {
+                out.println("Как бы то ни было СТРАННО, ящик безмолвствовал.");
+            }
+
+            @Override
+            public void carry(String name) {
+                out.println("Кто-то унес ящик комода.");
+            }
+
+            @Override
+            public void move() {
+                out.println("Кто-то открыл ящик комода.");
+            }
+
+            public void move(ILive prsn) {
+                out.println(prsn.toString() + " открыл ящик комода.");
+            }
+
+            @Override
+            public void put() {
+                out.println("Кто-то вернул ящик комода на место.");
+            }
         }
     }
-    public class Door{
-        public String toString(){
+
+    class Door {
+        public String toString() {
             return "Дверь";
         }
     }
-    public class Sofa implements Movable{
+
+    class Sofa implements Movable {
         @Override
         public void carry(String name) {
             throw new ExceptionImpossible();
         }
+
         @Override
         public void move() {
             out.println("Диван передвинут.");
         }
+
+        public void move(ILive pers, Object obj) {
+            out.println(pers.toString() + " передвинул диван к " + obj.toString() + ".");
+        }
+
         @Override
         public void put() {
             throw new ExceptionImpossible("Научите ставить диван... " +
                     "который невозможно поднять?!");
         }
-    }
-
-    private int code = 1;
-
-    public void access(ILive good){
-        if (equals(good)) {
-            this.code++;
-        }
-    }
-    @Override
-    public boolean equals(Object good) {
-        String name = good.toString();
-        out.println("Мумми-дом: " + hashCode() + " " + name + " - доступ разрешен.");
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (this.code * random() * 1707);
     }
 }
