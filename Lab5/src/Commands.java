@@ -83,6 +83,22 @@ public class Commands {
                 while (marine.setMeleeWeapon(scn.nextLine())) ;
                 out.println("Enter the Chapter:");
                 String schpt = scn.nextLine();
+                int commas = 0;
+                commaSearch:
+                {
+                    String[] j = schpt.split("");
+                    for (String f : j) {
+                        if (f.equals(",")) {
+                            out.println("No commas allowed");
+                            commas = 1;
+                            break commaSearch;
+                        }
+                    }
+                }
+                if (commas==1){
+                    collection.remove(marine);
+                    return;
+                }
                 for (Chapter i : chpts) {
                     if (i.getName().equals(schpt)) {
                         i.addCount();
@@ -136,7 +152,7 @@ public class Commands {
             for (SpaceMarine i : collection) {
                 writer.println(i.getName() + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
                         i.getHealth() + "," + i.getAchievements() + "," + i.getCategory() + "," + i.getMeleeWeapon()
-                        + "," + i.getChapter().getName());
+                        + "," + i.getChapter());
             }
             out.println("Successfully saved to Data.csv");
             writer.close();

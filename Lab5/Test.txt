@@ -1,4 +1,4 @@
-show
+snow
 add Vladislav 100 King
 100
 100

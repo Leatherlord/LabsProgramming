@@ -37,6 +37,22 @@ public class CommandReader {
                                 System.exit(1);
                             };
                             String schpt = scn.nextLine();
+                            int commas = 0;
+                            commaSearch:
+                            {
+                                String[] j = schpt.split("");
+                                for (String f : j) {
+                                    if (f.equals(",")) {
+                                        out.println("No commas allowed");
+                                        commas = 1;
+                                        break commaSearch;
+                                    }
+                                }
+                            }
+                            if (commas==1){
+                                collection.remove(marine);
+                                return;
+                            }
                             for (Chapter i : chpts) {
                                 if (i.getName().equals(schpt)) {
                                     i.addCount();
@@ -107,6 +123,23 @@ public class CommandReader {
                 out.println("Enter the command:");
             }
             words = scn.nextLine().split(" ");
+            int commas = 0;
+            commaSearch:
+            {
+                for (String i : words) {
+                    String[] j = i.split("");
+                    for (String f : j) {
+                        if (f.equals(",")) {
+                            out.println("No commas allowed");
+                            commas = 1;
+                            break commaSearch;
+                        }
+                    }
+                }
+            }
+            if (commas==1){
+                continue;
+            }
             switch (words[0]) {
                 case "help" -> commands.help();
                 case "info" -> commands.info(date, collection);
@@ -176,7 +209,11 @@ public class CommandReader {
                         out.println("Not enough arguments");
                     }
                 }
-                default -> out.println("Wrong command, try again");
+                default -> {
+                    if(marker==0) {
+                        out.println("Wrong command, try again");
+                    }
+                }
             }
         }
     }
