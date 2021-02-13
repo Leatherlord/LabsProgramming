@@ -157,7 +157,13 @@ public class CommandReader {
                     try {
                         commands.countGCategory(collection, AstartesCategory.valueOf(words[1]));
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        out.println("Not enough arguments");
+                        int j = 0;
+                        for (SpaceMarine i: collection){
+                            if (i.getCategory() == null){
+                                j++;
+                            }
+                        }
+                        out.println("Number of items with category greater than that: " + (collection.size()-j));
                     } catch (IllegalArgumentException e){
                         out.println("Category must be one of the given list (INCEPTOR, SUPPRESSOR, TACTICAL) or should not exist");
                     }
