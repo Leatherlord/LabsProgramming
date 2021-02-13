@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -117,104 +114,108 @@ public class CommandReader {
     }
 
     public void read(Commands commands, Scanner scn, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, Date date, String file, int marker) {
-        String[] words;
-        while (true) {
-            if (marker == 0) {
-                out.println("Enter the command:");
-            }
-            words = scn.nextLine().split(" ");
-            int commas = 0;
-            commaSearch:
-            {
-                for (String i : words) {
-                    String[] j = i.split("");
-                    for (String f : j) {
-                        if (f.equals(",")) {
-                            out.println("No commas allowed");
-                            commas = 1;
-                            break commaSearch;
-                        }
-                    }
+        try {
+            String[] words;
+            while (true) {
+                if (marker == 0) {
+                    out.println("Enter the command:");
                 }
-            }
-            if (commas==1){
-                continue;
-            }
-            switch (words[0]) {
-                case "help" -> commands.help();
-                case "info" -> commands.info(date, collection);
-                case "show" -> commands.show(collection);
-                case "add" -> {
-                    try {
-                        commands.add(collection, chapters, scn, words[1], Double.parseDouble(words[2]), words[3]);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        out.println("Not enough arguments");
-                    } catch (NumberFormatException e){
-                        out.println("Health must be Double, coords must be Double");
-                    }
-                }
-                case "update" -> {
-                    try {
-                        commands.updateById(collection, chapters, scn, Long.parseLong(words[1]), words[2], Double.parseDouble(words[3]), words[4]);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        out.println("Not enough arguments");
-                    } catch (NumberFormatException e) {
-                        out.println("Health and coords must be Double, ID must be Long");
-                    }
-                }
-                case "remove_by_id" -> {
-                    try {
-                        commands.removeById(collection, Long.parseLong(words[1]));
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        out.println("Not enough arguments");
-                    } catch (NumberFormatException e) {
-                        out.println("ID must be Long");
-                    }
-                }
-                case "clear" -> commands.clearCollection(collection);
-                case "save" -> commands.save(collection, file);
-                case "exit" -> commands.exit(scn);
-                case "remove_last" -> commands.removeLast(collection);
-                case "shuffle" -> commands.shuffle(collection);
-                case "sort" -> commands.sort(collection);
-                case "count_by_melee_weapon" -> {
-                    try {
-                        commands.countWeapon(collection, MeleeWeapon.valueOf(words[1]));
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        out.println("Not enough arguments");
-                    } catch (IllegalArgumentException e){
-                        out.println("Weapon must be one of the given list (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST)");
-                    }
-                }
-                case "count_greater_than_category" -> {
-                    try {
-                        commands.countGCategory(collection, AstartesCategory.valueOf(words[1]));
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        int j = 0;
-                        for (SpaceMarine i: collection){
-                            if (i.getCategory() == null){
-                                j++;
+                words = scn.nextLine().split(" ");
+                int commas = 0;
+                commaSearch:
+                {
+                    for (String i : words) {
+                        String[] j = i.split("");
+                        for (String f : j) {
+                            if (f.equals(",")) {
+                                out.println("No commas allowed");
+                                commas = 1;
+                                break commaSearch;
                             }
                         }
-                        out.println("Number of items with category greater than that: " + (collection.size()-j));
-                    } catch (IllegalArgumentException e){
-                        out.println("Category must be one of the given list (INCEPTOR, SUPPRESSOR, TACTICAL) or should not exist");
                     }
                 }
-                case "print_descending" -> commands.descending(collection);
-                case "execute_script" -> {
-                    try {
-                        new CommandReader(date, collection, chapters, file, words[1]);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        out.println("Not enough arguments");
-                    }
+                if (commas == 1) {
+                    continue;
                 }
-                default -> {
-                    if(marker==0) {
-                        out.println("Wrong command, try again");
+                switch (words[0]) {
+                    case "help" -> commands.help();
+                    case "info" -> commands.info(date, collection);
+                    case "show" -> commands.show(collection);
+                    case "add" -> {
+                        try {
+                            commands.add(collection, chapters, scn, words[1], Double.parseDouble(words[2]), words[3]);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            out.println("Not enough arguments");
+                        } catch (NumberFormatException e) {
+                            out.println("Health must be Double, coords must be Double");
+                        }
+                    }
+                    case "update" -> {
+                        try {
+                            commands.updateById(collection, chapters, scn, Long.parseLong(words[1]), words[2], Double.parseDouble(words[3]), words[4]);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            out.println("Not enough arguments");
+                        } catch (NumberFormatException e) {
+                            out.println("Health and coords must be Double, ID must be Long");
+                        }
+                    }
+                    case "remove_by_id" -> {
+                        try {
+                            commands.removeById(collection, Long.parseLong(words[1]));
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            out.println("Not enough arguments");
+                        } catch (NumberFormatException e) {
+                            out.println("ID must be Long");
+                        }
+                    }
+                    case "clear" -> commands.clearCollection(collection);
+                    case "save" -> commands.save(collection, file);
+                    case "exit" -> commands.exit(scn);
+                    case "remove_last" -> commands.removeLast(collection);
+                    case "shuffle" -> commands.shuffle(collection);
+                    case "sort" -> commands.sort(collection);
+                    case "count_by_melee_weapon" -> {
+                        try {
+                            commands.countWeapon(collection, MeleeWeapon.valueOf(words[1]));
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            out.println("Not enough arguments");
+                        } catch (IllegalArgumentException e) {
+                            out.println("Weapon must be one of the given list (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST)");
+                        }
+                    }
+                    case "count_greater_than_category" -> {
+                        try {
+                            commands.countGCategory(collection, AstartesCategory.valueOf(words[1]));
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            int j = 0;
+                            for (SpaceMarine i : collection) {
+                                if (i.getCategory() == null) {
+                                    j++;
+                                }
+                            }
+                            out.println("Number of items with category greater than that: " + (collection.size() - j));
+                        } catch (IllegalArgumentException e) {
+                            out.println("Category must be one of the given list (INCEPTOR, SUPPRESSOR, TACTICAL) or should not exist");
+                        }
+                    }
+                    case "print_descending" -> commands.descending(collection);
+                    case "execute_script" -> {
+                        try {
+                            new CommandReader(date, collection, chapters, file, words[1]);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            out.println("Not enough arguments");
+                        }
+                    }
+                    default -> {
+                        if (marker == 0) {
+                            out.println("Wrong command, try again");
+                        }
                     }
                 }
             }
+        } catch(NoSuchElementException e){
+            commands.exit(scn);
         }
     }
 }

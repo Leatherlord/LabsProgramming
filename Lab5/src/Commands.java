@@ -176,8 +176,12 @@ public class Commands {
     }
 
     public void removeLast(LinkedList<SpaceMarine> collection) {
-        collection.removeLast();
-        out.println("Successfully removed last item");
+        if (collection.size()>0){
+            collection.removeLast();
+            out.println("Successfully removed last item");
+        } else {
+            out.println("There is nothing to remove");
+        }
     }
 
     public void shuffle(LinkedList<SpaceMarine> collection) {
