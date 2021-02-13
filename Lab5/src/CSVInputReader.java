@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -11,7 +12,8 @@ public class CSVInputReader {
         try {
             Scanner scanner = new Scanner(new File(file));
 
-            while ((line = scanner.nextLine()) != null) {
+            while ((scanner.hasNextLine())) {
+                line = scanner.nextLine();
                 String[] row = line.split(",");
                 if (row.length != 8) {
                     out.println("Wrong data, too much or not enough data");
@@ -72,7 +74,9 @@ public class CSVInputReader {
                 marines.add(marine);
             }
             scanner.close();
-        } catch (Exception ignored) {
+        } catch (FileNotFoundException e) {
+            out.println("Could not find 'Data.csv', check your environment variable 'TEMP' to be equal\n" +
+                    "to path to 'Data.csv' or check its position");
         }
         return marines;
     }

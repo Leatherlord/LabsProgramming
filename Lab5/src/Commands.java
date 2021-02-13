@@ -1,5 +1,9 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -27,45 +31,38 @@ public class Commands {
                 meleeWeapon field is equal to the given one
                 count_greater_than_category category: display the number of items whose
                 category field value is greater than the specified
-                print_descending: print collection items in descending order""");
+                print_descending: print collection items in descending order
+                                
+                **IF YOU SEE '{element}' IN THE DESCRIPTION OF THE COMMAND, YOU SHOULD WRITE THE 'NAME' OF
+                AN ELEMENT, 'HEALTH' AND 'ACHIEVEMENTS' INSTEAD OF '{element}'""");
     }
 
-    public void info(Date date, int num, List<SpaceMarine> collection) {
+    public void info(Date date, LinkedList<SpaceMarine> collection) {
         out.println("Collection type: LinkedList\n" +
                 "Initialization date: " + date + "\n" +
-                "Number of elements: " + num + "\n" +
+                "Number of elements: " + collection.size() + "\n" +
                 "Names of elements: ");
         for (SpaceMarine i : collection) {
             out.println(i.getName());
         }
     }
 
-    public void show(List<SpaceMarine> collection) {
-        out.println(collection);
-        for(SpaceMarine i: collection){
-            out.println(i.getName() + ": \n" +
-                    i + "\n" +
-                    "Id: " + i.getId() + "\n" +
-                    i.getCoords() + "\n" +
-                    "Achievements: " + i.getAchievements() + "\n" +
-                    "Creation date: " + i.getCreationDate() + "\n" +
-                    "Health: " + i.getHealth() + "\n" +
-                    "Astartes Category: " + i.getCategory() + "\n" +
-                    "Melee Weapon: " + i.getMeleeWeapon() + "\n" +
-                    "Chapter: " + i.getChapter().getName() + "\n");
+    public void show(LinkedList<SpaceMarine> collection) {
+        for (SpaceMarine i : collection) {
+            out.println(i.toString());
         }
     }
 
-    public void add(List<SpaceMarine> collection, List<Chapter> chpts, Scanner scn, String name, Double health, String achievements) {
+    public void add(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, String name, Double health, String achievements) {
         SpaceMarine marine = new SpaceMarine();
         collection.add(marine);
         updateById(collection, chpts, scn, marine.getId(), name, health, achievements);
     }
 
-    public void updateById(List<SpaceMarine> collection, List<Chapter> chpts, Scanner scn, Long id, String name, Double health, String achievements){
+    public void updateById(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, Long id, String name, Double health, String achievements) {
         int iter = 0;
-        for (SpaceMarine marine: collection){
-            if (marine.getId() == id){
+        for (SpaceMarine marine : collection) {
+            if (marine.getId() == id) {
                 iter = 1;
                 marine.setName(name);
                 marine.setHealth(health);
@@ -76,9 +73,9 @@ public class Commands {
                 double y = Double.parseDouble(scn.nextLine());
                 marine.setCoordinates(x, y);
                 out.println("Enter the Category (INCEPTOR, SUPPRESSOR, TACTICAL):");
-                while (marine.setCategory(scn.nextLine()));
+                while (marine.setCategory(scn.nextLine())) ;
                 out.println("Enter the Weapon (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST):");
-                while (marine.setMeleeWeapon(scn.nextLine()));
+                while (marine.setMeleeWeapon(scn.nextLine())) ;
                 out.println("Enter the Chapter:");
                 String schpt = scn.nextLine();
                 for (Chapter i : chpts) {
@@ -94,12 +91,104 @@ public class Commands {
                     marine.setChapter(chpt);
                     chpts.add(chpt);
                 }
+                out.println("Success");
                 break;
             }
         }
-        if (iter == 0){
+        if (iter == 0) {
             out.println("Wrong ID, try again");
         }
     }
 
+    public void removeById(LinkedList<SpaceMarine> collection, Long id) {
+        int iter = 0;
+        for (SpaceMarine i : collection) {
+            if (i.getId() == id) {
+                iter = 1;
+                collection.remove(i);
+                out.println("Successfully removed");
+            }
+        }
+        if (iter == 0) {
+            out.println("Wrong ID, try again");
+        }
+    }
+
+    public void clearCollection(LinkedList<SpaceMarine> collection) {
+        collection.clear();
+        out.println("Successfully cleared");
+    }
+
+    public void save(LinkedList<SpaceMarine> collection, String file) {
+
+        try {
+            PrintWriter writer = new PrintWriter(new File(file));
+            writer.print("");
+            for (SpaceMarine i : collection) {
+                writer.println(i.getName() + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
+                        i.getHealth() + "," + i.getAchievements() + "," + i.getCategory() + "," + i.getMeleeWeapon()
+                        + "," + i.getChapter().getName());
+            }
+            out.println("Successfully saved to Data.csv");
+            writer.close();
+        } catch (FileNotFoundException e) {
+            out.println("Could not find 'Data.csv', check your environment variable 'TEMP' to be equal\n" +
+                    "to path to 'Data.csv' or check its position");
+        }
+    }
+
+    public void exit(Scanner scn) {
+        out.println("R u sure 'bout that? (Yeah/Nah)");
+        String answer = scn.nextLine();
+        if (answer.equals("Nah")) {
+            out.println("Exiting stopped, you can continue");
+        } else if (answer.equals("Yeah")) {
+            out.println("Thanks for using our airline! See ya soon. All processes are stopped...");
+            System.exit(0);
+        } else {
+            out.println("For your safe we managed to stop exiting");
+        }
+    }
+
+    public void removeLast(LinkedList<SpaceMarine> collection) {
+        collection.removeLast();
+        out.println("Successfully removed last item");
+    }
+
+    public void shuffle(LinkedList<SpaceMarine> collection) {
+        Collections.shuffle(collection);
+        out.println("Successfully shuffled");
+    }
+
+    public void sort(LinkedList<SpaceMarine> collection) {
+        Collections.sort(collection);
+        out.println("Successfully sorted");
+    }
+
+    public void countWeapon(LinkedList<SpaceMarine> collection, MeleeWeapon weapon) {
+        int i = 0;
+        for (SpaceMarine marine : collection) {
+            if (marine.getMeleeWeapon().equals(weapon)) {
+                i++;
+            }
+        }
+        out.println("Number of this weapon owners: " + i);
+    }
+
+    public void countGCategory(LinkedList<SpaceMarine> collection, AstartesCategory category) {
+        int i = 0;
+        for (SpaceMarine marine : collection) {
+            if (marine.getCategory().compareTo(category) > 0) {
+                i++;
+            }
+        }
+        out.println("Number of items with category greater than that: " + i);
+    }
+
+    public void descending(LinkedList<SpaceMarine> collection) {
+        LinkedList<SpaceMarine> reversed = new LinkedList<>(collection);
+        Collections.sort(reversed);
+        Collections.reverse(reversed);
+        show(reversed);
+    }
 }

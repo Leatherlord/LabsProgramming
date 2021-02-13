@@ -1,0 +1,9 @@
+show
+add Vladislav 100 King
+100
+100
+INCEPTOR
+CHAIN_SWORD
+Final
+save
+exit

@@ -25,4 +25,12 @@ public class Coordinates {
     public String getY() {
         return this.y.toString();
     }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

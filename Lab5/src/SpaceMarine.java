@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public class SpaceMarine implements Comparable<SpaceMarine> {
+public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
 
     private final long id = (long) (Math.random() * 10 * Math.random() * 10 * Math.random() * 10 * Math.random() * 10) ^ 2; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private final java.util.Date creationDate = new java.util.Date(); //Поле не может быть null, Значение этого поля должно генерироваться автоматически
@@ -11,6 +11,11 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
     private AstartesCategory category = null; //Поле может быть null
     private MeleeWeapon meleeWeapon; //Поле не может быть null
     private Chapter chapter = null; //Поле не может быть null
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     public long getId() {
         return id;
@@ -60,9 +65,11 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
         this.coordinates = new Coordinates(x, y);
     }
 
-    public String getCoords() {
-        return ("x: " + this.coordinates.getX() + "\ny: " + this.coordinates.getY());
+    public Coordinates getCoords() {
+        return this.coordinates;
     }
+
+
 
     public String getAchievements() {
         return this.achievements;
@@ -111,5 +118,19 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
     @Override
     public int compareTo(SpaceMarine o) {
         return this.name.compareTo(o.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "SpaceMarine{" +
+                "id=" + id +
+                ",\nname='" + name + '\'' +
+                ",\ncoordinates=" + coordinates.toString() +
+                ",\nhealth=" + health +
+                ",\nachievements='" + achievements + '\'' +
+                ",\ncategory=" + category +
+                ",\nmeleeWeapon=" + meleeWeapon +
+                ",\nchapter=" + chapter +
+                "}\n";
     }
 }
