@@ -86,8 +86,12 @@ public class Commands {
                 }
                 if (marine.isNotChapter()) {
                     Chapter chpt = new Chapter();
-                    chpt.setName(schpt);
-                    chpt.setMarinesCount(1);
+                    if (schpt.equals("")){
+                        chpt = null;
+                    } else {
+                        chpt.setName(schpt);
+                        chpt.setMarinesCount(1);
+                    }
                     marine.setChapter(chpt);
                     chpts.add(chpt);
                 }

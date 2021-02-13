@@ -66,8 +66,12 @@ public class CSVInputReader {
                 }
                 if (marine.isNotChapter()) {
                     Chapter chpt = new Chapter();
-                    chpt.setName(row[7]);
-                    chpt.setMarinesCount(1);
+                    if (row[7].equals("")){
+                        chpt = null;
+                    } else {
+                        chpt.setName(row[7]);
+                        chpt.setMarinesCount(1);
+                    }
                     marine.setChapter(chpt);
                     chapters.add(chpt);
                 }
