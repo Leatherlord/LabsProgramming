@@ -86,7 +86,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
             this.category = AstartesCategory.SUPPRESSOR;
         } else if ("TACTICAL".equals(str)) {
             this.category = AstartesCategory.TACTICAL;
-        } else if (!str.equals("")){
+        } else if (!((str.equals(""))||(str.equals("null")))){
             System.out.println("Wrong Category, try again");
             return true;
         }

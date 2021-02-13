@@ -85,7 +85,8 @@ public class CommandReader {
                     Collections.sort(collection);
                 }
             }, scn, collection, chapters, date, file, 1);
-        } catch (FileNotFoundException ignored) {
+        } catch (FileNotFoundException e) {
+            out.println("No such a file found");
         }
     }
 
