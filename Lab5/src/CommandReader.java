@@ -92,7 +92,7 @@ public class CommandReader {
                 public void sort(LinkedList<SpaceMarine> collection) {
                     Collections.sort(collection);
                 }
-            }, scn, collection, chapters, date, file, 1);   
+            }, scn, collection, chapters, date, file, 1);
         } catch (FileNotFoundException e) {
             out.println("No such a file found");
         }

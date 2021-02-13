@@ -144,9 +144,9 @@ public class Commands {
     public void exit(Scanner scn) {
         out.println("R u sure 'bout that? (Yeah/Nah)");
         String answer = scn.nextLine();
-        if (answer.equals("Nah")||answer.equalsIgnoreCase("N")) {
+        if ((answer.equals("Nah"))||(answer.equalsIgnoreCase("N"))) {
             out.println("Exiting stopped, you can continue");
-        } else if (answer.equals("Yeah")||answer.equalsIgnoreCase("Y")) {
+        } else if ((answer.equals("Yeah"))||(answer.equalsIgnoreCase("Y"))) {
             out.println("Thanks for using our airline! See ya soon. All processes are stopped...");
             System.exit(0);
         } else {
