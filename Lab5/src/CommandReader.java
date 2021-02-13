@@ -22,7 +22,9 @@ public class CommandReader {
                     for (SpaceMarine marine : collection) {
                         if (marine.getId() == id) {
                             iter = 1;
-                            marine.setName(name);
+                            if (marine.setName(name)){
+                                return;
+                            }
                             marine.setHealth(health);
                             marine.setAchievements(achievements);
                             double x = Double.parseDouble(scn.nextLine());
@@ -114,6 +116,8 @@ public class CommandReader {
                         commands.add(collection, chapters, scn, words[1], Double.parseDouble(words[2]), words[3]);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
+                    } catch (NumberFormatException e){
+                        out.println("Health must be Double, coords must be Double");
                     }
                 }
                 case "update" -> {
@@ -121,6 +125,8 @@ public class CommandReader {
                         commands.updateById(collection, chapters, scn, Long.parseLong(words[1]), words[2], Double.parseDouble(words[3]), words[4]);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
+                    } catch (NumberFormatException e) {
+                        out.println("Health and coords must be Double, ID must be Long");
                     }
                 }
                 case "remove_by_id" -> {
@@ -128,6 +134,8 @@ public class CommandReader {
                         commands.removeById(collection, Long.parseLong(words[1]));
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
+                    } catch (NumberFormatException e) {
+                        out.println("ID must be Long");
                     }
                 }
                 case "clear" -> commands.clearCollection(collection);
@@ -141,6 +149,8 @@ public class CommandReader {
                         commands.countWeapon(collection, MeleeWeapon.valueOf(words[1]));
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
+                    } catch (IllegalArgumentException e){
+                        out.println("Weapon must be one of the given list (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST)");
                     }
                 }
                 case "count_greater_than_category" -> {
@@ -148,6 +158,8 @@ public class CommandReader {
                         commands.countGCategory(collection, AstartesCategory.valueOf(words[1]));
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
+                    } catch (IllegalArgumentException e){
+                        out.println("Category must be one of the given list (INCEPTOR, SUPPRESSOR, TACTICAL) or should not exist");
                     }
                 }
                 case "print_descending" -> commands.descending(collection);

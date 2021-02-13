@@ -4,7 +4,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
 
     private final long id = (long) (Math.random() * 10 * Math.random() * 10 * Math.random() * 10 * Math.random() * 10) ^ 2; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private final java.util.Date creationDate = new java.util.Date(); //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private String name; //Поле не может быть null, Строка не может быть пустой
+    private String name = null; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
     private Double health = null; //Поле может быть null, Значение поля должно быть больше 0
     private String achievements = null; //Поле может быть null
@@ -19,10 +19,6 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
 
     public long getId() {
         return id;
-    }
-
-    public Date getCreationDate() {
-        return this.creationDate;
     }
 
     public AstartesCategory getCategory() {
@@ -53,12 +49,13 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
         return this.name;
     }
 
-    public void setName(String name) {
+    public boolean setName(String name) {
         if (name.equals("")) {
             System.out.println("Name must exist! Try to fix inputs");
-            System.exit(1);
+            return true;
         }
         this.name = name;
+        return false;
     }
 
     public void setCoordinates(double x, double y) {

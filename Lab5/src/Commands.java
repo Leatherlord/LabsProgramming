@@ -57,6 +57,9 @@ public class Commands {
         SpaceMarine marine = new SpaceMarine();
         collection.add(marine);
         updateById(collection, chpts, scn, marine.getId(), name, health, achievements);
+        if (marine.getName() == null){
+            collection.remove(marine);
+        }
     }
 
     public void updateById(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, Long id, String name, Double health, String achievements) {
@@ -64,7 +67,9 @@ public class Commands {
         for (SpaceMarine marine : collection) {
             if (marine.getId() == id) {
                 iter = 1;
-                marine.setName(name);
+                if (marine.setName(name)){
+                    return;
+                }
                 marine.setHealth(health);
                 marine.setAchievements(achievements);
                 out.println("Enter the x-coord:");
