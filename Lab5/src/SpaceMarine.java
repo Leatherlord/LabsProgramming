@@ -130,7 +130,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
                 ",\nachievements='" + achievements + '\'' +
                 ",\ncategory=" + category +
                 ",\nmeleeWeapon=" + meleeWeapon +
-                ",\nchapter=" + chapter +
+                ",\nchapter=" + chapter.getName() +
                 "}\n";
     }
 }
