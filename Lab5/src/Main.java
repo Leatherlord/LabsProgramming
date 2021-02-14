@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -6,15 +7,35 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 import java.util.LinkedList;
 
+/**
+ * The Main class of the program. Contains method main() where the main logic of the program is
+ */
 public class Main {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
 
         LinkedList<SpaceMarine> marines = new LinkedList<>();
         Date date = new Date();
 
-        String file = System.getenv("TEMP");
+        String filePath = System.getenv("TEMP");
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.out.println("Could not find the data-file: it will be created when you save your collection");
+        } else if (!file.canWrite()) {
+            System.out.println("There is no permission to write in data-file");
+            System.exit(1);
+        } else if (!file.canRead()) {
+            System.out.println("There is no permission to read data-file");
+            System.exit(1);
+        }
 
-        Path path = Paths.get(file);
+
+
+        Path path = Paths.get(filePath);
         BasicFileAttributes attr;
         try {
             attr = Files.readAttributes(path, BasicFileAttributes.class);
@@ -31,10 +52,10 @@ public class Main {
         chapters.add(test);
 
         CSVInputReader csvInputReader = new CSVInputReader();
-        marines = csvInputReader.csvCollector(marines, chapters, file);
+        marines = csvInputReader.csvCollector(marines, chapters, filePath);
         marines.sort(null);
 
-        new CommandReader(date, marines, chapters, file);
+        new CommandReader(date, marines, chapters, filePath);
     }
 }
 

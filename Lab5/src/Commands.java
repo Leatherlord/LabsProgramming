@@ -8,35 +8,83 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
+/**
+ * The class where all the commands are stored
+ */
 public class Commands {
 
+    /**
+     * The help command. Prints all the information that is important to know about the commands
+     *
+     * @see CommandReader
+     */
     public void help() {
         out.println("""
                 GUIDE
+                
                 help: display help for available commands
+                
                 info: print information about the collection to standard output
+                
                 show: display all elements of the collection in String representation to standard output
+                
                 add {element}: add a new element to the collection
+                ** Instead of {element} put the name, health (numeric value) and achievements - than follow the instructions. If the name
+                contains more than 1 word, write them using "_" as blank space. Multiple achievements are preferably written
+                using "/" as separation symbol. Commas are not allowed. **
+                
+                Example:
+                
+                add Van_Darkholme 300 Dungeonmaster/Leatherman/Dominant
+                
+                
                 update id {element}: update the value of the collection element which id is equal to the given
+                ** Instead of {element} put the name, health (numeric value) and achievements - than follow the instructions. If the name
+                contains more than 1 word, write them using "_" as blank space. Multiple achievements are preferably written
+                using "/" as separation symbol. Commas are not allowed. ID is numeric value. **
+                
+                Example:
+                
+                update 300 Van_Darkholme 300 Dungeonmaster/Leatherman/Dominant
+                
+                
                 remove_by_id id: remove an item from the collection by its id
+                ** ID is numeric value. **
+                
                 clear: clear the collection
-                save: save the collection to the file
+                
+                save: save the collection to the data-file
+                
                 execute_script file_name: read and execute a script from the specified file.
-                The script contains commands in the same form in which user enters them interactively
+                ** The script contains commands in the same form in which user enters them interactively. **
+                
                 exit: exit the program (without saving to file)
+                ** Needs your permission when used from standard input. **
+                
                 remove_last: remove the last item from the collection
+                
                 shuffle: shuffle collection items in random order
+                
                 sort: sort the collection in natural order
+                ** Elements are sorted with their names as an argument. **
+                
                 count_by_melee_weapon meleeWeapon: display the number of elements whose
                 meleeWeapon field is equal to the given one
+                
                 count_greater_than_category category: display the number of items whose
                 category field value is greater than the specified
-                print_descending: print collection items in descending order
-                                
-                **IF YOU SEE '{element}' IN THE DESCRIPTION OF THE COMMAND, YOU SHOULD WRITE THE 'NAME' OF
-                AN ELEMENT, 'HEALTH' AND 'ACHIEVEMENTS' INSTEAD OF '{element}'""");
+                ** Enum constants are compared in standard way. Null value is less than any other. **
+                
+                print_descending: print collection items in descending order""");
     }
 
+    /**
+     * The info command. Prints the information about the collection and names of all the objects included
+     *
+     * @param date       the date of initialization of the collection
+     * @param collection the collection which we work with
+     * @see CommandReader
+     */
     public void info(Date date, LinkedList<SpaceMarine> collection) {
         out.println("Collection type: LinkedList\n" +
                 "Initialization date: " + date + "\n" +
@@ -47,12 +95,29 @@ public class Commands {
         }
     }
 
+    /**
+     * The show command. Shows all the information about each of the elements of the collection
+     *
+     * @param collection the collection which we work with
+     * @see CommandReader
+     */
     public void show(LinkedList<SpaceMarine> collection) {
         for (SpaceMarine i : collection) {
             out.println(InfoGetter.toString(i));
         }
     }
 
+    /**
+     * The add command. Adds new element to the collection using the given information about this element
+     *
+     * @param collection   the collection which we work with
+     * @param chpts        the chapters collection where all the chapters are stored
+     * @param scn          the Scanner tuned with constructor of the Command Reader to read from System.in or from script-file
+     * @param name         the name of new element
+     * @param health       the health of new element
+     * @param achievements the achievements of new element
+     * @see CommandReader
+     */
     public void add(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, String name, Double health, String achievements) {
         SpaceMarine marine = new SpaceMarine();
         collection.add(marine);
@@ -62,6 +127,18 @@ public class Commands {
         }
     }
 
+    /**
+     * The update_by_id command. Updates the element which has the same id as given
+     *
+     * @param collection   the collection which we work with
+     * @param chpts        the chapters collection where all the chapters are stored
+     * @param scn          the Scanner tuned with constructor of the Command Reader to read from System.in or from script-file
+     * @param id           the id of updating element
+     * @param name         the name of updating element
+     * @param health       the health of updating element
+     * @param achievements the achievements of updating element
+     * @see CommandReader
+     */
     public void updateById(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, Long id, String name, Double health, String achievements) {
         int iter = 0;
         for (SpaceMarine marine : collection) {
@@ -125,6 +202,13 @@ public class Commands {
         }
     }
 
+    /**
+     * The remove_by_id command. Removes the element which has the same id as given
+     *
+     * @param collection the collection which we work with
+     * @param id         the id of removing element
+     * @see CommandReader
+     */
     public void removeById(LinkedList<SpaceMarine> collection, Long id) {
         int iter = 0;
         for (SpaceMarine i : collection) {
@@ -139,11 +223,24 @@ public class Commands {
         }
     }
 
+    /**
+     * The clear command. Erases everything from the collection
+     *
+     * @param collection the collection which we work with
+     * @see CommandReader
+     */
     public void clearCollection(LinkedList<SpaceMarine> collection) {
         collection.clear();
         out.println("Successfully cleared");
     }
 
+    /**
+     * The save command. Saves all the info about the collection to the data-file
+     *
+     * @param collection the collection which we work with
+     * @param file       the file where the collection is stored
+     * @see CommandReader
+     */
     public void save(LinkedList<SpaceMarine> collection, String file) {
 
         try {
@@ -162,6 +259,12 @@ public class Commands {
         }
     }
 
+    /**
+     * The exit command. Exits the program with user's permission
+     *
+     * @param scn the Scanner tuned with constructor of the Command Reader to read from System.in or from script-file
+     * @see CommandReader
+     */
     public void exit(Scanner scn) {
         out.println("R u sure 'bout that? (Yeah/Nah)");
         String answer = scn.nextLine();
@@ -175,6 +278,12 @@ public class Commands {
         }
     }
 
+    /**
+     * The remove_last command. Removes the last element of the collection
+     *
+     * @param collection the collection which we work with
+     * @see CommandReader
+     */
     public void removeLast(LinkedList<SpaceMarine> collection) {
         if (collection.size()>0){
             collection.removeLast();
@@ -184,16 +293,36 @@ public class Commands {
         }
     }
 
+    /**
+     * The shuffle command. Shuffles the collection in random order
+     *
+     * @param collection the collection which we work with
+     * @see CommandReader
+     */
     public void shuffle(LinkedList<SpaceMarine> collection) {
         Collections.shuffle(collection);
         out.println("Successfully shuffled");
     }
 
+    /**
+     * The sort command. Sorts the collection in natural order
+     *
+     * @param collection the collection which we work with
+     * @see CommandReader
+     */
     public void sort(LinkedList<SpaceMarine> collection) {
         Collections.sort(collection);
         out.println("Successfully sorted");
     }
 
+    /**
+     * The count_by_melee_weapon command. Counts the amount of elements which use this kind of Melee Weapon
+     *
+     * @param collection the collection which we work with
+     * @param weapon     the Melee Weapon enum constant which is used to count
+     * @see CommandReader
+     * @see MeleeWeapon
+     */
     public void countWeapon(LinkedList<SpaceMarine> collection, MeleeWeapon weapon) {
         int i = 0;
         for (SpaceMarine marine : collection) {
@@ -204,6 +333,14 @@ public class Commands {
         out.println("Number of this weapon owners: " + i);
     }
 
+    /**
+     * The count_greater_than_category command. Counts the amount of elements with the category field value greater than given
+     *
+     * @param collection the collection which we work with
+     * @param category   the Astartes Category enum constant which is used to count
+     * @see CommandReader
+     * @see AstartesCategory
+     */
     public void countGCategory(LinkedList<SpaceMarine> collection, AstartesCategory category) {
         int i = 0;
         for (SpaceMarine marine : collection) {
@@ -217,6 +354,12 @@ public class Commands {
         out.println("Number of items with category greater than that: " + i);
     }
 
+    /**
+     * The print_descending command. Prints all the information about all the elements of the collection in descending order
+     *
+     * @param collection the collection which we work with
+     * @see CommandReader
+     */
     public void descending(LinkedList<SpaceMarine> collection) {
         LinkedList<SpaceMarine> reversed = new LinkedList<>(collection);
         Collections.sort(reversed);

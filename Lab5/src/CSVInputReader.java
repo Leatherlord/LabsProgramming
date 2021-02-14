@@ -5,7 +5,18 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
+/**
+ * The CSV Input Reader class. It is meant to read the information from CSV data-file and parse it to fill the collection with pre-described objects
+ */
 public class CSVInputReader {
+    /**
+     * Method for collecting data and establishing collection with pre-given stats of its elements. Creates a new Scanner, looks through input, collecting the information, and creates objects
+     *
+     * @param marines  the collection which we work with
+     * @param chapters the chapters collection where all the chapters are stored
+     * @param file     the file where the collection is stored
+     * @return the collection of elements filled with data from data-file
+     */
     public LinkedList<SpaceMarine> csvCollector(LinkedList<SpaceMarine> marines, LinkedList<Chapter> chapters, String file) {
         String line;
 
@@ -85,8 +96,8 @@ public class CSVInputReader {
             }
             scanner.close();
         } catch (FileNotFoundException e) {
-            out.println("Could not find 'Data.csv', check your environment variable 'TEMP' to be equal\n" +
-                    "to path to 'Data.csv' or check its position");
+            out.println("Could not find the data-file, check your environment variable 'TEMP' to be equal\n" +
+                    "to path to the data-file or check its position");
         }
         return marines;
     }

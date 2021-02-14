@@ -4,12 +4,34 @@ import java.util.*;
 
 import static java.lang.System.out;
 
+/**
+ * The Command Reader class. It is meant to scan inputs and parse them into commands
+ */
 public class CommandReader {
+    /**
+     * Constructor for instantiating a new Command reader to use the System.in as input. Creates a new Scanner and uses a method read
+     *
+     * @param date       the date of initialization of the collection
+     * @param collection the collection which we work with
+     * @param chapters   the chapters collection where all the chapters are stored
+     * @param file       the file where the collection is stored
+     * @see Commands
+     */
     public CommandReader(Date date, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, String file) {
         Scanner scn = new Scanner(System.in);
         read(new Commands(), scn, collection, chapters, date, file, 0);
     }
 
+    /**
+     * Constructor for instantiating a new Command reader to use the script-file as input. Creates a new Scanner and uses a method read with anonymous Commands inheritor with muted commands
+     *
+     * @param date       the date of initialization of the collection
+     * @param collection the collection which we work with
+     * @param chapters   the chapters collection where all the chapters are stored
+     * @param file       the file where the collection is stored
+     * @param script     the script-file where we want to read the commands from
+     * @see Commands
+     */
     public CommandReader(Date date, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, String file, String script) {
         try {
             Scanner scn = new Scanner(new File(script));
@@ -113,6 +135,17 @@ public class CommandReader {
         }
     }
 
+    /**
+     * Method for reading the input and parsing the Strings into commands
+     *
+     * @param commands   the class which contains methods for all the commands
+     * @param scn        the Scanner tuned with constructor to read from System.in or from script-file
+     * @param collection the collection which we work with
+     * @param chapters   the chapters collection where all the chapters are stored
+     * @param date       the date of initialization of the collection
+     * @param file       the file where the collection is stored
+     * @param marker     the marker that helps us to know if we are reading from script-file (marker=1) or from System.in (marker=0).
+     */
     public void read(Commands commands, Scanner scn, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, Date date, String file, int marker) {
         try {
             String[] words;
