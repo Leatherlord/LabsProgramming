@@ -122,7 +122,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
      */
     public void setHealth(Double health) {
         if (health <= 0) {
-            System.out.println("Health must be below 0! Try to fix your inputs");
+            System.out.println("Health must be greater than 0! Try to fix your inputs");
             System.exit(1);
         }
         this.health = health;
