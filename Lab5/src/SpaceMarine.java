@@ -17,7 +17,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
     }
 
     public SpaceMarine(){
-        id = (long) (Math.random() * 10 * Math.random() * 10 * Math.random() * 10 * Math.random() * 10) ^ 2;
+        id = (long) (Math.random() * 10 * Math.random() * 10 * Math.random() * 10 * Math.random() * 10) ^ 2 * 211;
     }
 
     public SpaceMarine(long id){

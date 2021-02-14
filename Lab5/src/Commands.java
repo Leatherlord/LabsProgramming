@@ -207,7 +207,10 @@ public class Commands {
     public void countGCategory(LinkedList<SpaceMarine> collection, AstartesCategory category) {
         int i = 0;
         for (SpaceMarine marine : collection) {
-            if ((marine.getCategory().compareTo(category) > 0)||(marine.getCategory()==null)) {
+            if (marine.getCategory()==null){
+                continue;
+            }
+            if (marine.getCategory().compareTo(category) > 0) {
                 i++;
             }
         }
