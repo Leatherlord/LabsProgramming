@@ -15,61 +15,67 @@ public class CSVInputReader {
             while ((scanner.hasNextLine())) {
                 line = scanner.nextLine();
                 String[] row = line.split(",");
-                if (row.length != 8) {
+                if (row.length != 10) {
                     out.println("Wrong data, too much or not enough data");
                     System.exit(1);
                 }
                 SpaceMarine marine = new SpaceMarine();
 
-                if (row[0].equals("")) {
+                try{
+                    marine = new SpaceMarine(Long.parseLong(row[0]));
+                } catch (NumberFormatException e){
+                    out.println("Something wrong with given id, it was created automatically");
+                }
+
+                if (row[2].equals("")) {
                     System.out.println("Try to use a NAME, not a blank field");
                     System.exit(1);
                 }
 
-                marine.setName(row[0]);
+                marine.setName(row[2]);
 
                 try {
-                    Double.parseDouble(row[1]);
-                    Double.parseDouble(row[2]);
+                    Double.parseDouble(row[3]);
+                    Double.parseDouble(row[4]);
                 } catch (Exception e) {
                     System.out.println("Wrong coords, try again");
                     System.exit(1);
                 }
 
-                marine.setCoordinates(Double.parseDouble(row[1]), Double.parseDouble(row[2]));
+                marine.setCoordinates(Double.parseDouble(row[3]), Double.parseDouble(row[4]));
 
                 try {
-                    Double.parseDouble(row[3]);
+                    Double.parseDouble(row[5]);
                 } catch (Exception e) {
                     System.out.println("Wrong Health, try again");
                     System.exit(1);
                 }
 
-                marine.setHealth(Double.parseDouble(row[3]));
+                marine.setHealth(Double.parseDouble(row[5]));
 
-                marine.setAchievements(row[4]);
+                marine.setAchievements(row[6]);
 
-                if (marine.setCategory(row[5])) {
+                if (marine.setCategory(row[7])) {
                     System.exit(1);
                 }
 
-                if (marine.setMeleeWeapon(row[6])) {
+                if (marine.setMeleeWeapon(row[8])) {
                     System.exit(1);
                 }
 
 
                 for (Chapter i : chapters) {
-                    if (i.getName().equals(row[7])) {
+                    if (i.getName().equals(row[9])) {
                         i.addCount();
                         marine.setChapter(i);
                     }
                 }
                 if (marine.isNotChapter()) {
                     Chapter chpt = new Chapter();
-                    if (row[7].equals("")){
+                    if (row[9].equals("")){
                         chpt = null;
                     } else {
-                        chpt.setName(row[7]);
+                        chpt.setName(row[9]);
                         chpt.setMarinesCount(1);
                     }
                     marine.setChapter(chpt);

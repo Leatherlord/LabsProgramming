@@ -2,7 +2,7 @@ import java.util.Date;
 
 public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
 
-    private final long id = (long) (Math.random() * 10 * Math.random() * 10 * Math.random() * 10 * Math.random() * 10) ^ 2; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private final long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private final java.util.Date creationDate = new java.util.Date(); //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private String name = null; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -11,6 +11,18 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
     private AstartesCategory category = null; //Поле может быть null
     private MeleeWeapon meleeWeapon; //Поле не может быть null
     private Chapter chapter = null; //Поле не может быть null
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public SpaceMarine(){
+        id = (long) (Math.random() * 10 * Math.random() * 10 * Math.random() * 10 * Math.random() * 10) ^ 2;
+    }
+
+    public SpaceMarine(long id){
+        this.id = id;
+    }
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -117,17 +129,5 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Cloneable {
         return this.name.compareTo(o.getName());
     }
 
-    @Override
-    public String toString() {
-        return "SpaceMarine{" +
-                "id=" + id +
-                ",\nname='" + name + '\'' +
-                ",\ncoordinates=" + coordinates.toString() +
-                ",\nhealth=" + health +
-                ",\nachievements='" + achievements + '\'' +
-                ",\ncategory=" + category +
-                ",\nmeleeWeapon=" + meleeWeapon +
-                ",\nchapter=" + chapter +
-                "}\n";
-    }
+
 }

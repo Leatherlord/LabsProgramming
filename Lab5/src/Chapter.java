@@ -18,8 +18,4 @@ public class Chapter {
         this.marinesCount++;
     }
 
-    @Override
-    public String toString() {
-        return "name";
-    }
 }

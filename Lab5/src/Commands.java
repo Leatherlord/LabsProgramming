@@ -49,7 +49,7 @@ public class Commands {
 
     public void show(LinkedList<SpaceMarine> collection) {
         for (SpaceMarine i : collection) {
-            out.println(i.toString());
+            out.println(InfoGetter.toString(i));
         }
     }
 
@@ -150,9 +150,9 @@ public class Commands {
             PrintWriter writer = new PrintWriter(new File(file));
             writer.print("");
             for (SpaceMarine i : collection) {
-                writer.println(i.getName() + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
+                writer.println(i.getId() + "," + i.getCreationDate().getTime() + "," + i.getName() + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
                         i.getHealth() + "," + i.getAchievements() + "," + i.getCategory() + "," + i.getMeleeWeapon()
-                        + "," + i.getChapter());
+                        + "," + i.getChapter().getName());
             }
             out.println("Successfully saved to Data.csv");
             writer.close();
