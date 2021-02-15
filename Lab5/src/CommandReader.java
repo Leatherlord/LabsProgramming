@@ -9,7 +9,7 @@ import static java.lang.System.out;
  */
 public class CommandReader {
     /**
-     * Constructor for instantiating a new Command reader to use the System.in as input. Creates a new Scanner and uses a method read
+     * Constructor for instantiating a new Command reader to use the System.in as input. Creates a new Scanner and uses a method chose
      *
      * @param date       the date of initialization of the collection
      * @param collection the collection which we work with
@@ -19,11 +19,11 @@ public class CommandReader {
      */
     public CommandReader(Date date, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, String file) {
         Scanner scn = new Scanner(System.in);
-        read(new Commands(), scn, collection, chapters, date, file, 0);
+        chose(new Commands(), scn, collection, chapters, date, file, 0);
     }
 
     /**
-     * Constructor for instantiating a new Command reader to use the script-file as input. Creates a new Scanner and uses a method read with anonymous Commands inheritor with muted commands
+     * Constructor for instantiating a new Command reader to use the script-file as input. Creates a new Scanner and uses a method chose with anonymous Commands inheritor with muted commands
      *
      * @param date       the date of initialization of the collection
      * @param collection the collection which we work with
@@ -35,67 +35,72 @@ public class CommandReader {
     public CommandReader(Date date, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, String file, String script) {
         try {
             Scanner scn = new Scanner(new File(script));
-            read(new Commands() {
+            chose(new Commands() {
                 public void updateById(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, Long id, String name, Double health, String achievements) {
-                    int iter = 0;
-                    for (SpaceMarine marine : collection) {
-                        if (marine.getId() == id) {
-                            iter = 1;
-                            if (marine.setName(name)){
-                                return;
-                            }
-                            marine.setHealth(health);
-                            marine.setAchievements(achievements);
-                            double x = Double.parseDouble(scn.nextLine());
-                            double y = Double.parseDouble(scn.nextLine());
-                            marine.setCoordinates(x, y);
-                            if (marine.setCategory(scn.nextLine())){
-                                System.exit(1);
-                            };
-                            if (marine.setMeleeWeapon(scn.nextLine())){
-                                System.exit(1);
-                            };
-                            String schpt = scn.nextLine();
-                            int commas = 0;
-                            commaSearch:
-                            {
-                                String[] j = schpt.split("");
-                                for (String f : j) {
-                                    if (f.equals(",")) {
-                                        out.println("No commas allowed");
-                                        commas = 1;
-                                        break commaSearch;
+                    try {
+                        int iter = 0;
+                        for (SpaceMarine marine : collection) {
+                            if (marine.getId() == id) {
+                                iter = 1;
+                                if (marine.setName(name)) {
+                                    return;
+                                }
+                                marine.setHealth(health);
+                                marine.setAchievements(achievements);
+                                double x;
+                                double y;
+                                try {
+                                    x = Double.parseDouble(scn.nextLine());
+                                    y = Double.parseDouble(scn.nextLine());
+                                } catch (NumberFormatException e){
+                                    out.println("Coords must be Double");
+                                    collection.remove(marine);
+                                    return;
+                                }
+                                marine.setCoordinates(x, y);
+                                if (marine.setCategory(scn.nextLine())) {
+                                    System.exit(1);
+                                }
+                                if (marine.setMeleeWeapon(scn.nextLine())) {
+                                    System.exit(1);
+                                }
+                                String schpt = scn.nextLine();
+                                if (schpt.contains(",")) {
+                                    out.println("Commas are not allowed");
+                                    collection.remove(marine);
+                                    return;
+                                }
+                                for (Chapter i : chpts) {
+                                    if (i.getName().equals(schpt)) {
+                                        i.addCount();
+                                        marine.setChapter(i);
                                     }
                                 }
-                            }
-                            if (commas==1){
-                                collection.remove(marine);
-                                return;
-                            }
-                            for (Chapter i : chpts) {
-                                if (i.getName().equals(schpt)) {
-                                    i.addCount();
-                                    marine.setChapter(i);
+                                if (marine.isNotChapter()) {
+                                    Chapter chpt = new Chapter();
+                                    if (schpt.equals("")) {
+                                        out.println("Chapter mustn't be equal to null");
+                                        collection.remove(marine);
+                                        return;
+                                    } else {
+                                        chpt.setName(schpt);
+                                        chpt.setMarinesCount(1);
+                                    }
+                                    marine.setChapter(chpt);
+                                    chpts.add(chpt);
                                 }
+                                break;
                             }
-                            if (marine.isNotChapter()) {
-                                Chapter chpt = new Chapter();
-                                if (schpt.equals("")){
-                                    chpt = null;
-                                } else {
-                                    chpt.setName(schpt);
-                                    chpt.setMarinesCount(1);
-                                }
-                                marine.setChapter(chpt);
-                                chpts.add(chpt);
-                            }
-                            break;
                         }
-                    }
-                    if (iter == 0) {
-                        out.println("Update_By_Id: Wrong ID");
+                        if (iter == 0) {
+                            out.println("Update_By_Id: Wrong ID");
+                        }
+                    } catch (NumberFormatException e){
+                        out.println("Update_By_Id: Health must be Double, ID must be Long");
+
                     }
                 }
+
 
                 public void removeById(LinkedList<SpaceMarine> collection, Long id) {
                     int iter = 0;
@@ -146,109 +151,91 @@ public class CommandReader {
      * @param file       the file where the collection is stored
      * @param marker     the marker that helps us to know if we are reading from script-file (marker=1) or from System.in (marker=0).
      */
-    public void read(Commands commands, Scanner scn, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, Date date, String file, int marker) {
-        try {
-            String[] words;
-            while (true) {
-                if (marker == 0) {
-                    out.println("Enter the command:");
+    public void chose(Commands commands, Scanner scn, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, Date date, String file, int marker) {
+        String[] words;
+        String line;
+        while (scn.hasNextLine()) {
+            line = scn.nextLine();
+            if (line.contains(",")) {
+                out.println("No commas allowed");
+                continue;
+            }
+            words = line.split(" ");
+            switch (words[0]) {
+                case "help" -> commands.help();
+                case "info" -> commands.info(date, collection);
+                case "show" -> commands.show(collection);
+                case "add" -> {
+                    try {
+                        commands.add(collection, chapters, scn, words[1], Double.parseDouble(words[2]), words[3]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        out.println("Not enough arguments");
+                    } catch (NumberFormatException e){
+                        out.println("");
+                    }
                 }
-                words = scn.nextLine().split(" ");
-                int commas = 0;
-                commaSearch:
-                {
-                    for (String i : words) {
-                        String[] j = i.split("");
-                        for (String f : j) {
-                            if (f.equals(",")) {
-                                out.println("No commas allowed");
-                                commas = 1;
-                                break commaSearch;
+                case "update" -> {
+                    try {
+                        commands.updateById(collection, chapters, scn, Long.parseLong(words[1]), words[2], Double.parseDouble(words[3]), words[4]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        out.println("Not enough arguments");
+                    }
+                }
+                case "remove_by_id" -> {
+                    try {
+                        commands.removeById(collection, Long.parseLong(words[1]));
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        out.println("Not enough arguments");
+                    }
+                }
+                case "clear" -> commands.clearCollection(collection);
+                case "save" -> commands.save(collection, file);
+                case "exit" -> commands.exit(scn);
+                case "remove_last" -> commands.removeLast(collection);
+                case "shuffle" -> commands.shuffle(collection);
+                case "sort" -> commands.sort(collection);
+                case "count_by_melee_weapon" -> {
+                    try {
+                        commands.countWeapon(collection, MeleeWeapon.valueOf(words[1]));
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        out.println("Not enough arguments");
+                    } catch (IllegalArgumentException e) {
+                        out.println("Weapon must be one of the given list (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST)");
+                    }
+                }
+                case "count_greater_than_category" -> {
+                    try {
+                        commands.countGCategory(collection, AstartesCategory.valueOf(words[1]));
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        int j = 0;
+                        for (SpaceMarine i : collection) {
+                            if (i.getCategory() == null) {
+                                j++;
                             }
                         }
+                        out.println("Number of items with category greater than that: " + (collection.size() - j));
+                    } catch (IllegalArgumentException e) {
+                        out.println("Category must be one of the given list (INCEPTOR, SUPPRESSOR, TACTICAL) or should not exist");
                     }
                 }
-                if (commas == 1) {
-                    continue;
+                case "print_descending" -> commands.descending(collection);
+                case "execute_script" -> {
+                    try {
+                        new CommandReader(date, collection, chapters, file, words[1]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        out.println("Not enough arguments");
+                    }
                 }
-                switch (words[0]) {
-                    case "help" -> commands.help();
-                    case "info" -> commands.info(date, collection);
-                    case "show" -> commands.show(collection);
-                    case "add" -> {
-                        try {
-                            commands.add(collection, chapters, scn, words[1], Double.parseDouble(words[2]), words[3]);
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            out.println("Not enough arguments");
-                        } catch (NumberFormatException e) {
-                            out.println("Health must be Double, coords must be Double");
-                        }
-                    }
-                    case "update" -> {
-                        try {
-                            commands.updateById(collection, chapters, scn, Long.parseLong(words[1]), words[2], Double.parseDouble(words[3]), words[4]);
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            out.println("Not enough arguments");
-                        } catch (NumberFormatException e) {
-                            out.println("Health and coords must be Double, ID must be Long");
-                        }
-                    }
-                    case "remove_by_id" -> {
-                        try {
-                            commands.removeById(collection, Long.parseLong(words[1]));
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            out.println("Not enough arguments");
-                        } catch (NumberFormatException e) {
-                            out.println("ID must be Long");
-                        }
-                    }
-                    case "clear" -> commands.clearCollection(collection);
-                    case "save" -> commands.save(collection, file);
-                    case "exit" -> commands.exit(scn);
-                    case "remove_last" -> commands.removeLast(collection);
-                    case "shuffle" -> commands.shuffle(collection);
-                    case "sort" -> commands.sort(collection);
-                    case "count_by_melee_weapon" -> {
-                        try {
-                            commands.countWeapon(collection, MeleeWeapon.valueOf(words[1]));
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            out.println("Not enough arguments");
-                        } catch (IllegalArgumentException e) {
-                            out.println("Weapon must be one of the given list (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST)");
-                        }
-                    }
-                    case "count_greater_than_category" -> {
-                        try {
-                            commands.countGCategory(collection, AstartesCategory.valueOf(words[1]));
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            int j = 0;
-                            for (SpaceMarine i : collection) {
-                                if (i.getCategory() == null) {
-                                    j++;
-                                }
-                            }
-                            out.println("Number of items with category greater than that: " + (collection.size() - j));
-                        } catch (IllegalArgumentException e) {
-                            out.println("Category must be one of the given list (INCEPTOR, SUPPRESSOR, TACTICAL) or should not exist");
-                        }
-                    }
-                    case "print_descending" -> commands.descending(collection);
-                    case "execute_script" -> {
-                        try {
-                            new CommandReader(date, collection, chapters, file, words[1]);
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            out.println("Not enough arguments");
-                        }
-                    }
-                    default -> {
-                        if (marker == 0) {
-                            out.println("Wrong command, try again");
-                        }
+                default -> {
+                    if (marker == 0) {
+                        out.println("Wrong command, try again");
                     }
                 }
             }
-        } catch(NoSuchElementException e){
-            commands.exit(scn);
+            if (marker == 0) {
+                out.println("Enter the command:");
+            }
         }
+
     }
 }

@@ -54,7 +54,8 @@ public class Main {
         CSVInputReader csvInputReader = new CSVInputReader();
         marines = csvInputReader.csvCollector(marines, chapters, filePath);
         marines.sort(null);
-
+        System.out.println(Thread.currentThread().getStackTrace().length);
+        System.out.println("Enter the command: ");
         new CommandReader(date, marines, chapters, filePath);
     }
 }
