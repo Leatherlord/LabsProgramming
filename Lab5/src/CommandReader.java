@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 import static java.lang.System.out;
 
@@ -37,7 +40,6 @@ public class CommandReader {
             Scanner scn = new Scanner(new File(script));
             chose(new Commands() {
                 public void updateById(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, Long id, String name, Double health, String achievements) {
-                    try {
                         int iter = 0;
                         for (SpaceMarine marine : collection) {
                             if (marine.getId() == id) {
@@ -52,7 +54,7 @@ public class CommandReader {
                                 try {
                                     x = Double.parseDouble(scn.nextLine());
                                     y = Double.parseDouble(scn.nextLine());
-                                } catch (NumberFormatException e){
+                                } catch (NumberFormatException e) {
                                     out.println("Coords must be Double");
                                     collection.remove(marine);
                                     return;
@@ -95,10 +97,6 @@ public class CommandReader {
                         if (iter == 0) {
                             out.println("Update_By_Id: Wrong ID");
                         }
-                    } catch (NumberFormatException e){
-                        out.println("Update_By_Id: Health must be Double, ID must be Long");
-
-                    }
                 }
 
 
@@ -170,8 +168,8 @@ public class CommandReader {
                         commands.add(collection, chapters, scn, words[1], Double.parseDouble(words[2]), words[3]);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
-                    } catch (NumberFormatException e){
-                        out.println("");
+                    } catch (NumberFormatException e) {
+                        out.println("Health must be Double");
                     }
                 }
                 case "update" -> {
@@ -179,6 +177,8 @@ public class CommandReader {
                         commands.updateById(collection, chapters, scn, Long.parseLong(words[1]), words[2], Double.parseDouble(words[3]), words[4]);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
+                    } catch (NumberFormatException e) {
+                        out.println("Health must be Double, id must be Long");
                     }
                 }
                 case "remove_by_id" -> {
@@ -186,6 +186,8 @@ public class CommandReader {
                         commands.removeById(collection, Long.parseLong(words[1]));
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
+                    } catch (NumberFormatException e) {
+                        out.println("Id must be Long");
                     }
                 }
                 case "clear" -> commands.clearCollection(collection);

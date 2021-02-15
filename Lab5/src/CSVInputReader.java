@@ -32,9 +32,9 @@ public class CSVInputReader {
                 }
                 SpaceMarine marine = new SpaceMarine();
 
-                try{
+                try {
                     marine = new SpaceMarine(Long.parseLong(row[0]));
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     out.println("Something wrong with given id, it was created automatically");
                 }
 
@@ -83,7 +83,7 @@ public class CSVInputReader {
                 }
                 if (marine.isNotChapter()) {
                     Chapter chpt = new Chapter();
-                    if (row[9].equals("")){
+                    if (row[9].equals("")) {
                         chpt = null;
                     } else {
                         chpt.setName(row[9]);

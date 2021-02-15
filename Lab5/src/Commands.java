@@ -119,16 +119,13 @@ public class Commands {
      * @see CommandReader
      */
     public void add(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, String name, Double health, String achievements) {
-        try {
-            SpaceMarine marine = new SpaceMarine();
-            collection.add(marine);
-            updateById(collection, chpts, scn, marine.getId(), name, health, achievements);
-            if (marine.getName() == null) {
-                collection.remove(marine);
-            }
-        } catch (NumberFormatException e) {
-            out.println("Health must be Double");
+        SpaceMarine marine = new SpaceMarine();
+        collection.add(marine);
+        updateById(collection, chpts, scn, marine.getId(), name, health, achievements);
+        if (marine.getName() == null) {
+            collection.remove(marine);
         }
+
     }
 
     /**
@@ -144,78 +141,74 @@ public class Commands {
      * @see CommandReader
      */
     public void updateById(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, Long id, String name, Double health, String achievements) {
-        try {
-            int iter = 0;
-            for (SpaceMarine marine : collection) {
-                if (marine.getId() == id) {
-                    iter = 1;
-                    if (marine.setName(name)) {
-                        return;
-                    }
-                    marine.setHealth(health);
-                    marine.setAchievements(achievements);
-                    double x;
-                    double y;
-                    while (true) {
-                        try {
-                            out.println("Enter the x-coord:");
-                            x = Double.parseDouble(scn.nextLine());
-                            break;
-                        } catch (NumberFormatException e){
-                            out.println("This field must be Double");
-                        }
-                    }
-                    while (true) {
-                        try {
-                            out.println("Enter the y-coord:");
-                            y = Double.parseDouble(scn.nextLine());
-                            break;
-                        } catch (NumberFormatException e){
-                            out.println("This field must be Double");
-                        }
-                    }
-                    marine.setCoordinates(x, y);
-                    out.println("Enter the Category (INCEPTOR, SUPPRESSOR, TACTICAL):");
-                    while (marine.setCategory(scn.nextLine())) ;
-                    out.println("Enter the Weapon (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST):");
-                    while (marine.setMeleeWeapon(scn.nextLine())) ;
-                    while (true) {
-                        out.println("Enter the Chapter:");
-                        String schpt = scn.nextLine();
-                        if (schpt.contains(",")) {
-                            out.println("Commas are not allowed");
-                            continue;
-                        }
-                        for (Chapter i : chpts) {
-                            if (i.getName().equals(schpt)) {
-                                i.addCount();
-                                marine.setChapter(i);
-                                break;
-                            }
-                        }
-                        if (marine.isNotChapter()) {
-                            Chapter chpt = new Chapter();
-                            if (schpt.equals("")) {
-                                out.println("Chapter mustn't be equal to null");
-                                continue;
-                            } else {
-                                chpt.setName(schpt);
-                                chpt.setMarinesCount(1);
-                            }
-                            marine.setChapter(chpt);
-                            chpts.add(chpt);
-                            break;
-                        }
-                    }
-                    out.println("Success");
-                    break;
+        int iter = 0;
+        for (SpaceMarine marine : collection) {
+            if (marine.getId() == id) {
+                iter = 1;
+                if (marine.setName(name)) {
+                    return;
                 }
+                marine.setHealth(health);
+                marine.setAchievements(achievements);
+                double x;
+                double y;
+                while (true) {
+                    try {
+                        out.println("Enter the x-coord:");
+                        x = Double.parseDouble(scn.nextLine());
+                        break;
+                    } catch (NumberFormatException e) {
+                        out.println("This field must be Double");
+                    }
+                }
+                while (true) {
+                    try {
+                        out.println("Enter the y-coord:");
+                        y = Double.parseDouble(scn.nextLine());
+                        break;
+                    } catch (NumberFormatException e) {
+                        out.println("This field must be Double");
+                    }
+                }
+                marine.setCoordinates(x, y);
+                out.println("Enter the Category (INCEPTOR, SUPPRESSOR, TACTICAL):");
+                while (marine.setCategory(scn.nextLine())) ;
+                out.println("Enter the Weapon (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST):");
+                while (marine.setMeleeWeapon(scn.nextLine())) ;
+                while (true) {
+                    out.println("Enter the Chapter:");
+                    String schpt = scn.nextLine();
+                    if (schpt.contains(",")) {
+                        out.println("Commas are not allowed");
+                        continue;
+                    }
+                    for (Chapter i : chpts) {
+                        if (i.getName().equals(schpt)) {
+                            i.addCount();
+                            marine.setChapter(i);
+                            break;
+                        }
+                    }
+                    if (marine.isNotChapter()) {
+                        Chapter chpt = new Chapter();
+                        if (schpt.equals("")) {
+                            out.println("Chapter mustn't be equal to null");
+                            continue;
+                        } else {
+                            chpt.setName(schpt);
+                            chpt.setMarinesCount(1);
+                        }
+                        marine.setChapter(chpt);
+                        chpts.add(chpt);
+                        break;
+                    }
+                }
+                out.println("Success");
+                break;
             }
-            if (iter == 0) {
-                out.println("Wrong ID, try again");
-            }
-        } catch (NumberFormatException e) {
-            out.println("Health must be Double, ID must be Long");
+        }
+        if (iter == 0) {
+            out.println("Wrong ID, try again");
         }
     }
 
@@ -227,23 +220,20 @@ public class Commands {
      * @see CommandReader
      */
     public void removeById(LinkedList<SpaceMarine> collection, Long id) {
-        try {
 
 
-            int iter = 0;
-            for (SpaceMarine i : collection) {
-                if (i.getId() == id) {
-                    iter = 1;
-                    collection.remove(i);
-                    out.println("Successfully removed");
-                }
+        int iter = 0;
+        for (SpaceMarine i : collection) {
+            if (i.getId() == id) {
+                iter = 1;
+                collection.remove(i);
+                out.println("Successfully removed");
             }
-            if (iter == 0) {
-                out.println("Wrong ID, try again");
-            }
-        } catch (NumberFormatException e) {
-            out.println("ID must be Long");
         }
+        if (iter == 0) {
+            out.println("Wrong ID, try again");
+        }
+
     }
 
     /**

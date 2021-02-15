@@ -34,7 +34,6 @@ public class Main {
         }
 
 
-
         Path path = Paths.get(filePath);
         BasicFileAttributes attr;
         try {
