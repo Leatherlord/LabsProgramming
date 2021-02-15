@@ -17,7 +17,7 @@ public class CSVInputReader {
      * @param file     the file where the collection is stored
      * @return the collection of elements filled with data from data-file
      */
-    public LinkedList<SpaceMarine> csvCollector(LinkedList<SpaceMarine> marines, LinkedList<Chapter> chapters, String file) {
+    public LinkedList<SpaceMarine> csvCollect(LinkedList<SpaceMarine> marines, LinkedList<Chapter> chapters, String file) {
         String line;
 
         try {
