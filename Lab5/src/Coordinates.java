@@ -11,7 +11,7 @@ public class Coordinates {
     /**
      * The Y-coordinate. It cannot take the null value
      */
-    private Double y;
+    private final Double y;
 
     /**
      * Constructor for instantiating a new Coordinates.
@@ -26,7 +26,7 @@ public class Coordinates {
         } else {
             this.x = x;
         }
-            this.y = y;
+        this.y = y;
     }
 
     /**

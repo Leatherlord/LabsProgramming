@@ -12,7 +12,7 @@ public class InfoGetter {
      * @param marine the Space Marine object
      * @return the String object with all of that info
      */
-    public static String toString(SpaceMarine marine){
+    public static String toString(SpaceMarine marine) {
         return "SpaceMarine{" +
                 "id=" + marine.getId() +
                 ",\nname='" + marine.getName() + '\'' +
@@ -32,7 +32,7 @@ public class InfoGetter {
      * @param coords the Coordinates object
      * @return the String object with all of that info
      */
-    public static String toString(Coordinates coords){
+    public static String toString(Coordinates coords) {
         return "Coordinates{" +
                 "x=" + coords.getX() +
                 ", y=" + coords.getY() +

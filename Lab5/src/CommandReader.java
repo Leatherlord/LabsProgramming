@@ -40,63 +40,63 @@ public class CommandReader {
             Scanner scn = new Scanner(new File(script));
             chose(new Commands() {
                 public void updateById(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, Long id, String name, Double health, String achievements) {
-                        int iter = 0;
-                        for (SpaceMarine marine : collection) {
-                            if (marine.getId() == id) {
-                                iter = 1;
-                                if (marine.setName(name)) {
-                                    return;
-                                }
-                                marine.setHealth(health);
-                                marine.setAchievements(achievements);
-                                double x;
-                                double y;
-                                try {
-                                    x = Double.parseDouble(scn.nextLine());
-                                    y = Double.parseDouble(scn.nextLine());
-                                } catch (NumberFormatException e) {
-                                    out.println("Coords must be Double");
-                                    collection.remove(marine);
-                                    return;
-                                }
-                                marine.setCoordinates(x, y);
-                                if (marine.setCategory(scn.nextLine())) {
-                                    System.exit(1);
-                                }
-                                if (marine.setMeleeWeapon(scn.nextLine())) {
-                                    System.exit(1);
-                                }
-                                String schpt = scn.nextLine();
-                                if (schpt.contains(",")) {
-                                    out.println("Commas are not allowed");
-                                    collection.remove(marine);
-                                    return;
-                                }
-                                for (Chapter i : chpts) {
-                                    if (i.getName().equals(schpt)) {
-                                        i.addCount();
-                                        marine.setChapter(i);
-                                    }
-                                }
-                                if (marine.isNotChapter()) {
-                                    Chapter chpt = new Chapter();
-                                    if (schpt.equals("")) {
-                                        out.println("Chapter mustn't be equal to null");
-                                        collection.remove(marine);
-                                        return;
-                                    } else {
-                                        chpt.setName(schpt);
-                                        chpt.setMarinesCount(1);
-                                    }
-                                    marine.setChapter(chpt);
-                                    chpts.add(chpt);
-                                }
-                                break;
+                    int iter = 0;
+                    for (SpaceMarine marine : collection) {
+                        if (marine.getId() == id) {
+                            iter = 1;
+                            if (marine.setName(name)) {
+                                return;
                             }
+                            marine.setHealth(health);
+                            marine.setAchievements(achievements);
+                            double x;
+                            double y;
+                            try {
+                                x = Double.parseDouble(scn.nextLine());
+                                y = Double.parseDouble(scn.nextLine());
+                            } catch (NumberFormatException e) {
+                                out.println("Coords must be Double");
+                                collection.remove(marine);
+                                return;
+                            }
+                            marine.setCoordinates(x, y);
+                            if (marine.setCategory(scn.nextLine())) {
+                                System.exit(1);
+                            }
+                            if (marine.setMeleeWeapon(scn.nextLine())) {
+                                System.exit(1);
+                            }
+                            String schpt = scn.nextLine();
+                            if (schpt.contains(",")) {
+                                out.println("Commas are not allowed");
+                                collection.remove(marine);
+                                return;
+                            }
+                            for (Chapter i : chpts) {
+                                if (i.getName().equals(schpt)) {
+                                    i.addCount();
+                                    marine.setChapter(i);
+                                }
+                            }
+                            if (marine.isNotChapter()) {
+                                Chapter chpt = new Chapter();
+                                if (schpt.equals("")) {
+                                    out.println("Chapter mustn't be equal to null");
+                                    collection.remove(marine);
+                                    return;
+                                } else {
+                                    chpt.setName(schpt);
+                                    chpt.setMarinesCount(1);
+                                }
+                                marine.setChapter(chpt);
+                                chpts.add(chpt);
+                            }
+                            break;
                         }
-                        if (iter == 0) {
-                            out.println("Update_By_Id: Wrong ID");
-                        }
+                    }
+                    if (iter == 0) {
+                        out.println("Update_By_Id: Wrong ID");
+                    }
                 }
 
 

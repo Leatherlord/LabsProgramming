@@ -3,7 +3,7 @@ import java.util.Date;
 /**
  * The Space Marine class - that exact class that is meant to fill the collection with its objects
  */
-public class SpaceMarine implements Comparable<SpaceMarine>{
+public class SpaceMarine implements Comparable<SpaceMarine> {
     /**
      * The field that contains the unique id of Space Marine as long number. Is is greater than 0 and it generates automatically
      */
@@ -42,18 +42,9 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
     private Chapter chapter = null;
 
     /**
-     * Method for getting the creation date of an object as an object of java.util.Date
-     *
-     * @return the creation date of an object
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    /**
      * Constructor for instantiating a new Space Marine. Generates random id for the new marines
      */
-    public SpaceMarine(){
+    public SpaceMarine() {
         id = (long) (Math.random() * 10 * Math.random() * 10 * Math.random() * 10 * Math.random() * 10) ^ 2 * 211;
     }
 
@@ -63,8 +54,17 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
      * @param id the id of existing marine
      * @see CSVInputReader
      */
-    public SpaceMarine(long id){
+    public SpaceMarine(long id) {
         this.id = id;
+    }
+
+    /**
+     * Method for getting the creation date of an object as an object of java.util.Date
+     *
+     * @return the creation date of an object
+     */
+    public Date getCreationDate() {
+        return creationDate;
     }
 
     /**
@@ -104,6 +104,16 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
      */
     public Chapter getChapter() {
         return this.chapter;
+    }
+
+    /**
+     * Method for setting the chapter of Space Marine
+     *
+     * @param i the chapter of Space Marine as Chapter object
+     * @see Chapter
+     */
+    public void setChapter(Chapter i) {
+        this.chapter = i;
     }
 
     /**
@@ -173,7 +183,6 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
         return this.coordinates;
     }
 
-
     /**
      * Method for getting the achievements of Space Marine as a String object
      *
@@ -206,7 +215,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
             this.category = AstartesCategory.SUPPRESSOR;
         } else if ("TACTICAL".equals(str)) {
             this.category = AstartesCategory.TACTICAL;
-        } else if (!((str.equals(""))||(str.equals("null")))){
+        } else if (!((str.equals("")) || (str.equals("null")))) {
             System.out.println("Wrong Category, try again");
             return true;
         }
@@ -242,16 +251,6 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
      */
     public boolean isNotChapter() {
         return (this.chapter == null);
-    }
-
-    /**
-     * Method for setting the chapter of Space Marine
-     *
-     * @param i the chapter of Space Marine as Chapter object
-     * @see Chapter
-     */
-    public void setChapter(Chapter i) {
-        this.chapter = i;
     }
 
     @Override
