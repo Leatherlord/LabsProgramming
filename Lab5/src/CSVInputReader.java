@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -19,78 +21,99 @@ public class CSVInputReader {
      */
     public LinkedList<SpaceMarine> csvCollect(LinkedList<SpaceMarine> marines, LinkedList<Chapter> chapters, String file) {
         String line;
-
+        int rowN = 0;
         try {
             Scanner scanner = new Scanner(new File(file));
 
             while ((scanner.hasNextLine())) {
+                rowN++;
                 line = scanner.nextLine();
-                String[] row = line.split(",");
-                if (row.length != 10) {
-                    out.println("Wrong data, too much or not enough data");
-                    System.exit(1);
+                ArrayList<String> row = lineReader(line);
+                if (row.size() < 10) {
+                    out.println("Wrong data: not enough data in row " + rowN);
+                    continue;
                 }
-                SpaceMarine marine = new SpaceMarine();
-
+                if (row.size() > 10) {
+                    out.println("Wrong data: too much data in row " + rowN);
+                    continue;
+                }
+                Date date = new Date();
                 try {
-                    marine = new SpaceMarine(Long.parseLong(row[0]));
+                    date = new Date(Long.parseLong(row.get(1)));
+                } catch (Exception e) {
+                    out.println("Something wrong with given date in row " + rowN + ", it was set as today's date");
+                }
+                SpaceMarine marine;
+                try {
+                    for (SpaceMarine i : marines) {
+                        if (i.getId() == Long.parseLong(row.get(0))) {
+                            out.println("ID mustn't be identical - object from row " + rowN + " was not created");
+                            row.set(0, "error");
+                        }
+                    }
+                    marine = new SpaceMarine(Long.parseLong(row.get(0)), date);
                 } catch (NumberFormatException e) {
-                    out.println("Something wrong with given id, it was created automatically");
+                    out.println("Something wrong with given id in row " + rowN);
+                    continue;
                 }
 
-                if (row[2].equals("")) {
-                    System.out.println("Try to use a NAME, not a blank field");
-                    System.exit(1);
+
+                if (row.get(2).equals("")) {
+                    out.println("Try to use a NAME, not a blank field in row " + rowN);
+                    continue;
                 }
 
-                marine.setName(row[2]);
+                marine.setName(row.get(2));
 
                 try {
-                    Double.parseDouble(row[3]);
-                    Double.parseDouble(row[4]);
+                    Double.parseDouble(row.get(3));
+                    Double.parseDouble(row.get(4));
                 } catch (Exception e) {
-                    System.out.println("Wrong coords, try again");
+                    out.println("Wrong coords in row " + rowN + ", try again");
                     System.exit(1);
                 }
 
-                marine.setCoordinates(Double.parseDouble(row[3]), Double.parseDouble(row[4]));
+                marine.setCoordinates(Double.parseDouble(row.get(3)), Double.parseDouble(row.get(4)));
 
                 try {
-                    Double.parseDouble(row[5]);
+                    Double.parseDouble(row.get(5));
                 } catch (Exception e) {
-                    System.out.println("Wrong Health, try again");
+                    out.println("Wrong Health in row " + rowN + ", try again");
                     System.exit(1);
                 }
 
-                marine.setHealth(Double.parseDouble(row[5]));
+                marine.setHealth(Double.parseDouble(row.get(5)));
 
-                marine.setAchievements(row[6]);
+                marine.setAchievements(row.get(6));
 
-                if (marine.setCategory(row[7])) {
-                    System.exit(1);
+                if (marine.setCategory(row.get(7))) {
+                    out.println("Exception in row " + rowN);
+                    continue;
                 }
 
-                if (marine.setMeleeWeapon(row[8])) {
-                    System.exit(1);
+                if (marine.setMeleeWeapon(row.get(8))) {
+                    out.println("Exception in row " + rowN);
+                    continue;
                 }
 
 
                 for (Chapter i : chapters) {
-                    if (i.getName().equals(row[9])) {
+                    if (i.getName().equals(row.get(9))) {
                         i.addCount();
                         marine.setChapter(i);
                     }
                 }
                 if (marine.isNotChapter()) {
-                    Chapter chpt = new Chapter();
-                    if (row[9].equals("")) {
-                        chpt = null;
+                    Chapter chapter = new Chapter();
+                    if (row.get(9).equals("")) {
+                        out.println("Wrong chapter in row " + rowN + ", it mustn't be null-ish");
+                        continue;
                     } else {
-                        chpt.setName(row[9]);
-                        chpt.setMarinesCount(1);
+                        chapter.setName(row.get(9));
+                        chapter.setMarinesCount(1);
                     }
-                    marine.setChapter(chpt);
-                    chapters.add(chpt);
+                    marine.setChapter(chapter);
+                    chapters.add(chapter);
                 }
                 marines.add(marine);
             }
@@ -101,4 +124,29 @@ public class CSVInputReader {
         }
         return marines;
     }
+
+    private ArrayList<String> lineReader(String line) {
+        boolean screen = false;
+        String[] symbols = line.split("");
+        ArrayList<String> row = new ArrayList<>();
+        row.add("");
+        for (String ch : symbols) {
+            if (screen) {
+                row.set(row.size() - 1, row.get(row.size() - 1) + ch);
+                screen = false;
+                continue;
+            }
+            if (ch.equals("\\")) {
+                screen = true;
+                continue;
+            }
+            if (ch.equals(",")) {
+                row.add("");
+                continue;
+            }
+            row.set(row.size() - 1, row.get(row.size() - 1) + ch);
+        }
+        return row;
+    }
 }
+//row.set(row.size()-1, row.get(row.size()-1) + "");

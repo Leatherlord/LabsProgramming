@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -19,63 +22,62 @@ public class Commands {
      * @see CommandReader
      */
     public void help() {
-        out.println("""
-                GUIDE
-                                
-                help: display help for available commands
-                                
-                info: print information about the collection to standard output
-                                
-                show: display all elements of the collection in String representation to standard output
-                                
-                add {element}: add a new element to the collection
-                ** Instead of {element} put the name, health (numeric value) and achievements - than follow the instructions. If the name
-                contains more than 1 word, write them using "_" as blank space. Multiple achievements are preferably written
-                using "/" as separation symbol. Commas are not allowed. **
-                                
-                Example:
-                                
-                add Van_Darkholme 300 Dungeonmaster/Leatherman/Dominant
-                                
-                                
-                update id {element}: update the value of the collection element which id is equal to the given
-                ** Instead of {element} put the name, health (numeric value) and achievements - than follow the instructions. If the name
-                contains more than 1 word, write them using "_" as blank space. Multiple achievements are preferably written
-                using "/" as separation symbol. Commas are not allowed. ID is numeric value. **
-                                
-                Example:
-                                
-                update 300 Van_Darkholme 300 Dungeonmaster/Leatherman/Dominant
-                                
-                                
-                remove_by_id id: remove an item from the collection by its id
-                ** ID is numeric value. **
-                                
-                clear: clear the collection
-                                
-                save: save the collection to the data-file
-                                
-                execute_script file_name: read and execute a script from the specified file.
-                ** The script contains commands in the same form in which user enters them interactively. **
-                                
-                exit: exit the program (without saving to file)
-                ** Needs your permission when used from standard input. **
-                                
-                remove_last: remove the last item from the collection
-                                
-                shuffle: shuffle collection items in random order
-                                
-                sort: sort the collection in natural order
-                ** Elements are sorted with their names as an argument. **
-                                
-                count_by_melee_weapon meleeWeapon: display the number of elements whose
-                meleeWeapon field is equal to the given one
-                                
-                count_greater_than_category category: display the number of items whose
-                category field value is greater than the specified
-                ** Enum constants are compared in standard way. Null value is less than any other. **
-                                
-                print_descending: print collection items in descending order""");
+        out.println("GUIDE\n" +
+                "\n" +
+                "help: display help for available commands\n" +
+                "\n" +
+                "info: print information about the collection to standard output\n" +
+                "\n" +
+                "show: display all elements of the collection in String representation to standard output\n" +
+                "\n" +
+                "add {element}: add a new element to the collection\n" +
+                "** Instead of {element} put the name, health (numeric value) and achievements - than follow the instructions. If the name\n" +
+                "contains more than 1 word, write them using \"_\" as blank space. Multiple achievements are preferably written\n" +
+                "using \"/\" as separation symbol. Commas are not allowed. **\n" +
+                "\n" +
+                "Example:\n" +
+                "\n" +
+                "add Van_Darkholme 300 Dungeonmaster/Leatherman/Dominant\n" +
+                "\n" +
+                "\n" +
+                "update id {element}: update the value of the collection element which id is equal to the given\n" +
+                "** Instead of {element} put the name, health (numeric value) and achievements - than follow the instructions. If the name\n" +
+                "contains more than 1 word, write them using \"_\" as blank space. Multiple achievements are preferably written\n" +
+                "using \"/\" as separation symbol. Commas are not allowed. ID is numeric value. **\n" +
+                "\n" +
+                "Example:\n" +
+                "\n" +
+                "update 300 Van_Darkholme 300 Dungeonmaster/Leatherman/Dominant\n" +
+                "\n" +
+                "\n" +
+                "remove_by_id id: remove an item from the collection by its id\n" +
+                "** ID is numeric value. **\n" +
+                "\n" +
+                "clear: clear the collection\n" +
+                "\n" +
+                "save: save the collection to the data-file\n" +
+                "\n" +
+                "execute_script file_name: read and execute a script from the specified file.\n" +
+                "** The script contains commands in the same form in which user enters them interactively. **\n" +
+                "\n" +
+                "exit: exit the program (without saving to file)\n" +
+                "** Needs your permission when used from standard input. **\n" +
+                "\n" +
+                "remove_last: remove the last item from the collection\n" +
+                "\n" +
+                "shuffle: shuffle collection items in random order\n" +
+                "\n" +
+                "sort: sort the collection in natural order\n" +
+                "** Elements are sorted with their names as an argument. **\n" +
+                "\n" +
+                "count_by_melee_weapon meleeWeapon: display the number of elements whose\n" +
+                "meleeWeapon field is equal to the given one\n" +
+                "\n" +
+                "count_greater_than_category category: display the number of items whose\n" +
+                "category field value is greater than the specified\n" +
+                "** Enum constants are compared in standard way. Null value is less than any other. **\n" +
+                "\n" +
+                "print_descending: print collection items in descending order");
     }
 
     /**
@@ -86,6 +88,7 @@ public class Commands {
      * @see CommandReader
      */
     public void info(Date date, LinkedList<SpaceMarine> collection) {
+
         out.println("Collection type: LinkedList\n" +
                 "Initialization date: " + date + "\n" +
                 "Number of elements: " + collection.size() + "\n" +
@@ -119,7 +122,13 @@ public class Commands {
      * @see CommandReader
      */
     public void add(LinkedList<SpaceMarine> collection, LinkedList<Chapter> chpts, Scanner scn, String name, Double health, String achievements) {
-        SpaceMarine marine = new SpaceMarine();
+        long maxId = -1;
+        for (SpaceMarine i : collection) {
+            if (i.getId() > maxId) {
+                maxId = i.getId() + 1;
+            }
+        }
+        SpaceMarine marine = new SpaceMarine(maxId, new Date());
         collection.add(marine);
         updateById(collection, chpts, scn, marine.getId(), name, health, achievements);
         if (marine.getName() == null) {
@@ -178,10 +187,6 @@ public class Commands {
                 while (true) {
                     out.println("Enter the Chapter:");
                     String schpt = scn.nextLine();
-                    if (schpt.contains(",")) {
-                        out.println("Commas are not allowed");
-                        continue;
-                    }
                     for (Chapter i : chpts) {
                         if (i.getName().equals(schpt)) {
                             i.addCount();
@@ -260,15 +265,17 @@ public class Commands {
             PrintWriter writer = new PrintWriter(new File(file));
             writer.print("");
             for (SpaceMarine i : collection) {
-                writer.println(i.getId() + "," + i.getCreationDate().getTime() + "," + i.getName() + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
-                        i.getHealth() + "," + i.getAchievements() + "," + i.getCategory() + "," + i.getMeleeWeapon()
-                        + "," + i.getChapter().getName());
+                writer.println(i.getId() + "," + i.getCreationDate().getTime() + "," + i.getName().replaceAll(",", "\\\\,") + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
+                        i.getHealth() + "," + i.getAchievements().replaceAll(",", "\\\\,") + "," + i.getCategory() + "," + i.getMeleeWeapon()
+                        + "," + i.getChapter().getName().replaceAll(",", "\\\\,"));
             }
-            out.println("Successfully saved to Data.csv");
+            if (!file.equals("BACKUP")) {
+                out.println("Successfully saved");
+            }
             writer.close();
         } catch (FileNotFoundException e) {
-            out.println("Could not find 'Data.csv', check your environment variable 'TEMP' to be equal\n" +
-                    "to path to 'Data.csv' or check its position");
+            out.println("Could not find your database, check your environment variable 'TEMP' to be equal\n" +
+                    "to path to database or check its position");
         }
     }
 
@@ -279,15 +286,24 @@ public class Commands {
      * @see CommandReader
      */
     public void exit(Scanner scn) {
-        out.println("R u sure 'bout that? (Yeah/Nah)");
-        String answer = scn.nextLine();
-        if ((answer.equals("Nah")) || (answer.equalsIgnoreCase("N"))) {
-            out.println("Exiting stopped, you can continue");
-        } else if ((answer.equals("Yeah")) || (answer.equalsIgnoreCase("Y"))) {
+        if (new File("BACKUP").exists()) {
+            out.println("R u sure 'bout that? (Yeah/Nah)");
+            String answer = scn.nextLine();
+            if ((answer.equals("Nah")) || (answer.equalsIgnoreCase("N"))) {
+                out.println("Exiting stopped, you can continue");
+            } else if ((answer.equals("Yeah")) || (answer.equalsIgnoreCase("Y"))) {
+                out.println("Thanks for using our airline! See ya soon. All processes are stopped...");
+                try {
+                    Files.delete(Paths.get("BACKUP"));
+                } catch (IOException ignored) {
+                }
+                System.exit(0);
+            } else {
+                out.println("For your safe we managed to stop exiting");
+            }
+        } else {
             out.println("Thanks for using our airline! See ya soon. All processes are stopped...");
             System.exit(0);
-        } else {
-            out.println("For your safe we managed to stop exiting");
         }
     }
 

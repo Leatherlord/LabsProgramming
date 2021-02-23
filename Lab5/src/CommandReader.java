@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -35,7 +38,7 @@ public class CommandReader {
      * @param script     the script-file where we want to read the commands from
      * @see Commands
      */
-    public CommandReader(Date date, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, String file, String script) {
+    public CommandReader(Date date, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, String file, String script, int marker) {
         try {
             Scanner scn = new Scanner(new File(script));
             chose(new Commands() {
@@ -67,11 +70,6 @@ public class CommandReader {
                                 System.exit(1);
                             }
                             String schpt = scn.nextLine();
-                            if (schpt.contains(",")) {
-                                out.println("Commas are not allowed");
-                                collection.remove(marine);
-                                return;
-                            }
                             for (Chapter i : chpts) {
                                 if (i.getName().equals(schpt)) {
                                     i.addCount();
@@ -132,9 +130,11 @@ public class CommandReader {
                 public void sort(LinkedList<SpaceMarine> collection) {
                     Collections.sort(collection);
                 }
-            }, scn, collection, chapters, date, file, 1);
+            }, scn, collection, chapters, date, file, marker);
         } catch (FileNotFoundException e) {
             out.println("No such a file found");
+        } catch (StackOverflowError error) {
+            out.println("Could not continue because of danger of StackOverflow. " + marker + " iterations happened");
         }
     }
 
@@ -147,23 +147,28 @@ public class CommandReader {
      * @param chapters   the chapters collection where all the chapters are stored
      * @param date       the date of initialization of the collection
      * @param file       the file where the collection is stored
-     * @param marker     the marker that helps us to know if we are reading from script-file (marker=1) or from System.in (marker=0).
+     * @param marker     the marker that helps us to know if we are reading from script-file (marker>=1) or from System.in (marker=0).
      */
     public void chose(Commands commands, Scanner scn, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, Date date, String file, int marker) {
         String[] words;
         String line;
         while (scn.hasNextLine()) {
             line = scn.nextLine();
-            if (line.contains(",")) {
-                out.println("No commas allowed");
-                continue;
-            }
             words = line.split(" ");
             switch (words[0]) {
-                case "help" -> commands.help();
-                case "info" -> commands.info(date, collection);
-                case "show" -> commands.show(collection);
-                case "add" -> {
+                case "help":
+                    commands.help();
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "info":
+                    commands.info(date, collection);
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "show":
+                    commands.show(collection);
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "add":
                     try {
                         commands.add(collection, chapters, scn, words[1], Double.parseDouble(words[2]), words[3]);
                     } catch (ArrayIndexOutOfBoundsException e) {
@@ -171,8 +176,9 @@ public class CommandReader {
                     } catch (NumberFormatException e) {
                         out.println("Health must be Double");
                     }
-                }
-                case "update" -> {
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "update":
                     try {
                         commands.updateById(collection, chapters, scn, Long.parseLong(words[1]), words[2], Double.parseDouble(words[3]), words[4]);
                     } catch (ArrayIndexOutOfBoundsException e) {
@@ -180,8 +186,9 @@ public class CommandReader {
                     } catch (NumberFormatException e) {
                         out.println("Health must be Double, id must be Long");
                     }
-                }
-                case "remove_by_id" -> {
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "remove_by_id":
                     try {
                         commands.removeById(collection, Long.parseLong(words[1]));
                     } catch (ArrayIndexOutOfBoundsException e) {
@@ -189,14 +196,35 @@ public class CommandReader {
                     } catch (NumberFormatException e) {
                         out.println("Id must be Long");
                     }
-                }
-                case "clear" -> commands.clearCollection(collection);
-                case "save" -> commands.save(collection, file);
-                case "exit" -> commands.exit(scn);
-                case "remove_last" -> commands.removeLast(collection);
-                case "shuffle" -> commands.shuffle(collection);
-                case "sort" -> commands.sort(collection);
-                case "count_by_melee_weapon" -> {
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "clear":
+                    commands.clearCollection(collection);
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "save":
+                    commands.save(collection, file);
+                    try {
+                        Files.delete(Paths.get("BACKUP"));
+                    } catch (IOException ignored) {
+                    }
+                    break;
+                case "exit":
+                    commands.exit(scn);
+                    break;
+                case "remove_last":
+                    commands.removeLast(collection);
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "shuffle":
+                    commands.shuffle(collection);
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "sort":
+                    commands.sort(collection);
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "count_by_melee_weapon":
                     try {
                         commands.countWeapon(collection, MeleeWeapon.valueOf(words[1]));
                     } catch (ArrayIndexOutOfBoundsException e) {
@@ -204,8 +232,9 @@ public class CommandReader {
                     } catch (IllegalArgumentException e) {
                         out.println("Weapon must be one of the given list (CHAIN_SWORD, MANREAPER, LIGHTING_CLAW, POWER_FIST)");
                     }
-                }
-                case "count_greater_than_category" -> {
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "count_greater_than_category":
                     try {
                         commands.countGCategory(collection, AstartesCategory.valueOf(words[1]));
                     } catch (ArrayIndexOutOfBoundsException e) {
@@ -219,20 +248,25 @@ public class CommandReader {
                     } catch (IllegalArgumentException e) {
                         out.println("Category must be one of the given list (INCEPTOR, SUPPRESSOR, TACTICAL) or should not exist");
                     }
-                }
-                case "print_descending" -> commands.descending(collection);
-                case "execute_script" -> {
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "print_descending":
+                    commands.descending(collection);
+                    commands.save(collection, "BACKUP");
+                    break;
+                case "execute_script":
                     try {
-                        new CommandReader(date, collection, chapters, file, words[1]);
+                        new CommandReader(date, collection, chapters, file, words[1], marker + 1);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         out.println("Not enough arguments");
                     }
-                }
-                default -> {
+                    commands.save(collection, "BACKUP");
+                    break;
+                default:
                     if (marker == 0) {
                         out.println("Wrong command, try again");
                     }
-                }
+                    break;
             }
             if (marker == 0) {
                 out.println("Enter the command:");

@@ -11,7 +11,7 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
     /**
      * The java.util.Date object that represents the date of initialisation of Space Marine. It mustn't be equal to null and it generates automatically
      */
-    private final java.util.Date creationDate = new java.util.Date();
+    private final java.util.Date creationDate;
     /**
      * The field that contains the name of Space Marine as String object. It mustn't be equal to null and it mustn't be empty
      */
@@ -42,20 +42,14 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
     private Chapter chapter = null;
 
     /**
-     * Constructor for instantiating a new Space Marine. Generates random id for the new marines
-     */
-    public SpaceMarine() {
-        id = (long) (Math.random() * 10 * Math.random() * 10 * Math.random() * 10 * Math.random() * 10) ^ 2 * 211;
-    }
-
-    /**
      * Constructor for instantiating a Space Marine. It takes an id for marines which already existed in data-file
      *
      * @param id the id of existing marine
      * @see CSVInputReader
      */
-    public SpaceMarine(long id) {
+    public SpaceMarine(long id, Date date) {
         this.id = id;
+        this.creationDate = date;
     }
 
     /**
@@ -231,14 +225,21 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
      */
     public boolean setMeleeWeapon(String str) {
         switch (str) {
-            case "CHAIN_SWORD" -> this.meleeWeapon = MeleeWeapon.CHAIN_SWORD;
-            case "MANREAPER" -> this.meleeWeapon = MeleeWeapon.MANREAPER;
-            case "LIGHTING_CLAW" -> this.meleeWeapon = MeleeWeapon.LIGHTING_CLAW;
-            case "POWER_FIST" -> this.meleeWeapon = MeleeWeapon.POWER_FIST;
-            default -> {
+            case "CHAIN_SWORD":
+                this.meleeWeapon = MeleeWeapon.CHAIN_SWORD;
+                break;
+            case "MANREAPER":
+                this.meleeWeapon = MeleeWeapon.MANREAPER;
+                break;
+            case "LIGHTING_CLAW":
+                this.meleeWeapon = MeleeWeapon.LIGHTING_CLAW;
+                break;
+            case "POWER_FIST":
+                this.meleeWeapon = MeleeWeapon.POWER_FIST;
+                break;
+            default:
                 System.out.println("Wrong Weapon, try again");
                 return true;
-            }
         }
         return false;
     }
