@@ -128,8 +128,8 @@ public class CSVInputReader {
     /**
      * Method for reading line and processing it into an ArrayList of words
      *
-     * @param line  String line that needs processing
-     * @return  An ArrayList of String words
+     * @param line String line that needs processing
+     * @return An ArrayList of String words
      */
     private ArrayList<String> lineReader(String line) {
         boolean screen = false;

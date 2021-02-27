@@ -44,7 +44,7 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
     /**
      * Constructor for instantiating a Space Marine. It takes an id and date for marines which already existed in data-file
      *
-     * @param id the id of existing marine
+     * @param id   the id of existing marine
      * @param date the creation date of existing marine
      * @see CSVInputReader
      */

@@ -5,13 +5,13 @@
  */
 public class Coordinates {
     /**
-     * The X-coordinate. It cannot be under -448 and cannot take the null value
-     */
-    private Double x;
-    /**
      * The Y-coordinate. It cannot take the null value
      */
     private final Double y;
+    /**
+     * The X-coordinate. It cannot be under -448 and cannot take the null value
+     */
+    private Double x;
 
     /**
      * Constructor for instantiating a new Coordinates.
