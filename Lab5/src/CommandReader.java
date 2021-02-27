@@ -36,6 +36,7 @@ public class CommandReader {
      * @param chapters   the chapters collection where all the chapters are stored
      * @param file       the file where the collection is stored
      * @param script     the script-file where we want to read the commands from
+     * @param marker     the marker that helps us to know if we are reading from script-file (marker>=1) or from System.in (marker=0).
      * @see Commands
      */
     public CommandReader(Date date, LinkedList<SpaceMarine> collection, LinkedList<Chapter> chapters, String file, String script, int marker) {

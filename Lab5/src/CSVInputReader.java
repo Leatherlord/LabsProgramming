@@ -125,6 +125,12 @@ public class CSVInputReader {
         return marines;
     }
 
+    /**
+     * Method for reading line and processing it into an ArrayList of words
+     *
+     * @param line  String line that needs processing
+     * @return  An ArrayList of String words
+     */
     private ArrayList<String> lineReader(String line) {
         boolean screen = false;
         String[] symbols = line.split("");
@@ -149,4 +155,3 @@ public class CSVInputReader {
         return row;
     }
 }
-//row.set(row.size()-1, row.get(row.size()-1) + "");

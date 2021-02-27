@@ -33,7 +33,7 @@ public class Commands {
                 "add {element}: add a new element to the collection\n" +
                 "** Instead of {element} put the name, health (numeric value) and achievements - than follow the instructions. If the name\n" +
                 "contains more than 1 word, write them using \"_\" as blank space. Multiple achievements are preferably written\n" +
-                "using \"/\" as separation symbol. Commas are not allowed. **\n" +
+                "using \"/\" as separation symbol. **\n" +
                 "\n" +
                 "Example:\n" +
                 "\n" +
@@ -43,7 +43,7 @@ public class Commands {
                 "update id {element}: update the value of the collection element which id is equal to the given\n" +
                 "** Instead of {element} put the name, health (numeric value) and achievements - than follow the instructions. If the name\n" +
                 "contains more than 1 word, write them using \"_\" as blank space. Multiple achievements are preferably written\n" +
-                "using \"/\" as separation symbol. Commas are not allowed. ID is numeric value. **\n" +
+                "using \"/\" as separation symbol. ID is numeric value. **\n" +
                 "\n" +
                 "Example:\n" +
                 "\n" +
@@ -265,9 +265,9 @@ public class Commands {
             PrintWriter writer = new PrintWriter(new File(file));
             writer.print("");
             for (SpaceMarine i : collection) {
-                writer.println(i.getId() + "," + i.getCreationDate().getTime() + "," + i.getName().replaceAll(",", "\\\\,") + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
-                        i.getHealth() + "," + i.getAchievements().replaceAll(",", "\\\\,") + "," + i.getCategory() + "," + i.getMeleeWeapon()
-                        + "," + i.getChapter().getName().replaceAll(",", "\\\\,"));
+                writer.println(i.getId() + "," + i.getCreationDate().getTime() + "," + i.getName().replaceAll("\\\\", "\\\\\\\\").replaceAll(",", "\\\\,") + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
+                        i.getHealth() + "," + i.getAchievements().replaceAll("\\\\", "\\\\\\\\").replaceAll(",", "\\\\,") + "," + i.getCategory() + "," + i.getMeleeWeapon()
+                        + "," + i.getChapter().getName().replaceAll("\\\\", "\\\\\\\\").replaceAll(",", "\\\\,"));
             }
             if (!file.equals("BACKUP")) {
                 out.println("Successfully saved");

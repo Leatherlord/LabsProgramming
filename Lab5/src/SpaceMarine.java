@@ -42,9 +42,10 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
     private Chapter chapter = null;
 
     /**
-     * Constructor for instantiating a Space Marine. It takes an id for marines which already existed in data-file
+     * Constructor for instantiating a Space Marine. It takes an id and date for marines which already existed in data-file
      *
      * @param id the id of existing marine
+     * @param date the creation date of existing marine
      * @see CSVInputReader
      */
     public SpaceMarine(long id, Date date) {
