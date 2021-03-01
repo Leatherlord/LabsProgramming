@@ -23,7 +23,7 @@ public class Main {
 
         LinkedList<SpaceMarine> marines = new LinkedList<>();
         Date date = new Date();
-        String filePath = "fsklgkrwen";
+        String filePath = "Data.csv";
         try {
             filePath = System.getenv("TEMP");
         } catch (Exception e) {
@@ -34,9 +34,6 @@ public class Main {
         File backup = new File("BACKUP");
         if (!file.exists()) {
             System.out.println("Could not find the data-file: it will be created when you save your collection");
-        } else if (!file.canWrite()) {
-            System.out.println("There is no permission to write in data-file");
-            System.exit(1);
         } else if (!file.canRead()) {
             System.out.println("There is no permission to read data-file");
             System.exit(1);
@@ -45,6 +42,14 @@ public class Main {
             System.out.println("Do you want to load from backup? (Y/N)");
             Scanner scn = new Scanner(System.in);
             if (scn.nextLine().equalsIgnoreCase("Y")) {
+                if (!backup.canRead()) {
+                    System.out.println("There is no permission to read backup-file");
+                    System.exit(1);
+                }
+                if (!file.canWrite()) {
+                    System.out.println("There is no permission to write in data-file");
+                    System.exit(1);
+                }
                 try {
                     PrintWriter writer = new PrintWriter(file);
                     Scanner scanner = new Scanner(backup);

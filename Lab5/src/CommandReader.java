@@ -256,6 +256,11 @@ public class CommandReader {
                     commands.save(collection, "BACKUP");
                     break;
                 case "execute_script":
+                    File script = new File(words[1]);
+                    if (!script.canRead()) {
+                        out.println("Script file is unable to read");
+                        continue;
+                    }
                     try {
                         new CommandReader(date, collection, chapters, file, words[1], marker + 1);
                     } catch (ArrayIndexOutOfBoundsException e) {

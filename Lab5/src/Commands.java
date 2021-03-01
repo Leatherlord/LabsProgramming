@@ -256,20 +256,27 @@ public class Commands {
      * The save command. Saves all the info about the collection to the data-file
      *
      * @param collection the collection which we work with
-     * @param file       the file where the collection is stored
+     * @param filename       the file where the collection is stored
      * @see CommandReader
      */
-    public void save(LinkedList<SpaceMarine> collection, String file) {
-
+    public void save(LinkedList<SpaceMarine> collection, String filename) {
+        File file = new File(filename);
+        if (!file.canWrite() && !filename.equals("BACKUP")) {
+            out.println("There is no permission to write in data-file");
+            System.exit(1);
+        }
+        if (!file.canWrite() && filename.equals("BACKUP")) {
+            out.println("Cannot save to backup file, change the permissions, please");
+        }
         try {
-            PrintWriter writer = new PrintWriter(new File(file));
+            PrintWriter writer = new PrintWriter(file);
             writer.print("");
             for (SpaceMarine i : collection) {
                 writer.println(i.getId() + "," + i.getCreationDate().getTime() + "," + i.getName().replaceAll("\\\\", "\\\\\\\\").replaceAll(",", "\\\\,") + "," + i.getCoords().getX() + "," + i.getCoords().getY() + "," +
                         i.getHealth() + "," + i.getAchievements().replaceAll("\\\\", "\\\\\\\\").replaceAll(",", "\\\\,") + "," + i.getCategory() + "," + i.getMeleeWeapon()
                         + "," + i.getChapter().getName().replaceAll("\\\\", "\\\\\\\\").replaceAll(",", "\\\\,"));
             }
-            if (!file.equals("BACKUP")) {
+            if (!filename.equals("BACKUP")) {
                 out.println("Successfully saved");
             }
             writer.close();
