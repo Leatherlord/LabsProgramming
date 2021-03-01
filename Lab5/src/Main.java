@@ -30,6 +30,10 @@ public class Main {
             System.out.println("Something wrong with your Environment Variable 'TEMP' - it must be equal to the name of your database");
             System.exit(1);
         }
+        if (filePath == null) {
+            System.out.println("Something wrong with your Environment Variable 'TEMP' - it must be equal to the name of your database");
+            System.exit(1);
+        }
         File file = new File(filePath);
         File backup = new File("BACKUP");
         if (!file.exists()) {
