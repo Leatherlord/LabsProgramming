@@ -15,7 +15,7 @@ public class Coordinates implements Serializable {
     /**
      * The X-coordinate. It cannot be under -448 and cannot take the null value
      */
-    private Double x;
+    private final Double x;
 
     /**
      * Constructor for instantiating a new additionals.Coordinates.
@@ -24,12 +24,7 @@ public class Coordinates implements Serializable {
      * @param y the y-coordinate
      */
     public Coordinates(Double x, Double y) {
-        if (x <= -488) {
-            System.out.println("Wrong 'x' Coords, check the input and try again");
-            System.exit(1);
-        } else {
-            this.x = x;
-        }
+        this.x = x;
         this.y = y;
     }
 

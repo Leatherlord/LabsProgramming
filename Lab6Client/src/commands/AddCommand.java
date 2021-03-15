@@ -50,4 +50,7 @@ public class AddCommand implements Command, Serializable {
         return this.filename;
     }
 
+    public String getCommandName() {
+        return "AddCommand";
+    }
 }

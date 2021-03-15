@@ -31,4 +31,8 @@ public class RemoveLastCommand implements Command, Serializable {
     public String getFilename() {
         return this.filename;
     }
+
+    public String getCommandName() {
+        return "RemoveLastCommand";
+    }
 }

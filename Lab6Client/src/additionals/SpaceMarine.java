@@ -1,5 +1,7 @@
 package additionals;
 
+import program.csvparse.CSVInputReader;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,7 +16,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
     /**
      * The java.util.Date object that represents the date of initialisation of Space Marine. It mustn't be equal to null and it generates automatically
      */
-    private final java.util.Date creationDate;
+    private final Date creationDate;
     /**
      * The field that contains the name of Space Marine as String object. It mustn't be equal to null and it mustn't be empty
      */
@@ -129,10 +131,6 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
      * @param health the Space Marine's health as Double
      */
     public void setHealth(Double health) {
-        if (health <= 0) {
-            System.out.println("Health must be greater than 0! Try to fix your inputs");
-            System.exit(1);
-        }
         this.health = health;
     }
 
@@ -152,10 +150,6 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
      * @return boolean value
      */
     public boolean setName(String name) {
-        if (name.equals("")) {
-            System.out.println("Name must exist! Try to fix inputs");
-            return true;
-        }
         this.name = name;
         return false;
     }
@@ -214,7 +208,6 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
         } else if ("TACTICAL".equals(str)) {
             this.category = AstartesCategory.TACTICAL;
         } else if (!((str.equals("")) || (str.equals("null")))) {
-            System.out.println("Wrong Category, try again");
             return true;
         }
         return false;
@@ -242,7 +235,6 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
                 this.meleeWeapon = MeleeWeapon.POWER_FIST;
                 break;
             default:
-                System.out.println("Wrong Weapon, try again");
                 return true;
         }
         return false;

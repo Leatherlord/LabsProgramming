@@ -8,4 +8,5 @@ public interface Command {
     void execute(LinkedList<SpaceMarine> collection);
     String getMessage();
     String getFilename();
+    String getCommandName();
 }

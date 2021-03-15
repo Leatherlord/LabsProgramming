@@ -44,10 +44,7 @@ public class Client {
                 System.out.println("Something wrong with your Environment Variable 'TEMP' - it must be equal to the name of your database");
                 System.exit(1);
             }
-            if (filePath == null) {
-                System.out.println("Something wrong with your Environment Variable 'TEMP' - it must be equal to the name of your database");
-                System.exit(1);
-            }
+
 
             System.out.println("Enter the command: ");
             new CommandReader(s, a, filePath);
