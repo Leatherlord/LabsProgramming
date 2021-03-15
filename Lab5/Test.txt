@@ -1,2 +1,0 @@
-execute_script Test.txt
-execute_script Test.txt
